@@ -1125,5 +1125,13 @@ CircleAvatar(
         ],
       ),
     );
+  ),
+    );
+  }
+
+  Widget _buildAccountTab() {
+    return const Center(
+      child: Text('حسابي'),
+    );
   }
 }
