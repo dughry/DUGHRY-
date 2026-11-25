@@ -1120,13 +1120,8 @@ class _MainShellScreenState extends State<MainShellScreen> {
 CircleAvatar(
                 radius: 20,
               ),
-            ],
-          ),
-        ],
-      ),
     );
-  ),
-    );
+  }
   }
 
   Widget _buildCartTab() {
