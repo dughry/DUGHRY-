@@ -1129,6 +1129,12 @@ CircleAvatar(
     );
   }
 
+  Widget _buildOrdersTab() {
+    return const Center(
+      child: Text('طلباتي'),
+    );
+  }
+
   Widget _buildAccountTab() {
     return const Center(
       child: Text('حسابي'),
