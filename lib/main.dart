@@ -1117,5 +1117,13 @@ class _MainShellScreenState extends State<MainShellScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CircleAvatar(
-                              radius
+CircleAvatar(
+                radius: 20,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
