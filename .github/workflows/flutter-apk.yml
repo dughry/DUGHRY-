@@ -27,6 +27,7 @@ jobs:
           flutter create --org com.dughry --project-name dughry --platforms=android .
           cp /tmp/pubspec.yaml.bak pubspec.yaml
           cp /tmp/main.dart.bak lib/main.dart
+          sed -i 's/gradle-[0-9.]*-/gradle-8.7-/' android/gradle/wrapper/gradle-wrapper.properties
 
       - name: Get dependencies
         run: flutter pub get
