@@ -1060,22 +1060,22 @@ class _MainShellScreenState extends State<MainShellScreen> {
   // ==========================================
   // تبويب 2: الأقسام الـ 12 كاملة
   // ==========================================
-  Widget _buildCategoriesTab() {
+ Widget _buildCategoriesTab() {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'جميع أقسام دوجري (12 قسماً)',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF0D254C)),
+            'كل الأقسام (12)',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF0254C3)),
           ),
           const SizedBox(height: 4),
           Text(
-            'متاحة حالياً في: ${_currentGov.name}',
+            'متاح في: ${_currentGov.name}',
             style: const TextStyle(fontSize: 13, color: Colors.black54),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 16),
           Expanded(
             child: GridView.builder(
               itemCount: kCategories.length,
@@ -1091,12 +1091,11 @@ class _MainShellScreenState extends State<MainShellScreen> {
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('قسم ${cat.name} (${cat.type}) -${_currentGov.name}'),
+                        content: Text('قسم ${cat.name} (${cat.type}) - ${_currentGov.name}'),
                         duration: const Duration(seconds: 1),
                       ),
                     );
                   },
-                  borderRadius: BorderRadius.circular(14),
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
@@ -1117,9 +1116,20 @@ class _MainShellScreenState extends State<MainShellScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-CircleAvatar(
-                radius: 20,
-              ),
+                            CircleAvatar(
+                              radius: 20,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
   }
