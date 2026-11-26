@@ -1096,3 +1096,4 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
     );
   }
 }
+}
