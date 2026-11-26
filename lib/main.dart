@@ -537,7 +537,6 @@ class RoleRegistrationForm extends StatefulWidget {
 
   @override
   State<RoleRegistrationForm> createState() => _RoleRegistrationFormState();
-);
 }
 
 class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
@@ -599,7 +598,6 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
     _secondaryCtrl.dispose();
     super.dispose();
   }
-  }
 
   void _submitRegistration() {
     if (!_formKey.currentState!.validate()) return;
@@ -627,8 +625,10 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
       primaryVal = 'حساب عميل مباشر';
       secondaryVal = 'دخول فوري مفعل';
     }
+  }
+}
 
-    final// ============================================================================
+// ============================================================================
 // تطبيق دوجري | DUGHRY - ملف lib/main.dart (الجزء 3 والأخير: 3 من 3)
 // الصفحة الرئيسية - سلايدر 3 شرائح - 12 قسماً دائرياً - السلة وطلباتي وحسابي
 // ============================================================================
@@ -913,7 +913,7 @@ class DughryAppStateStore {
     final order = DughryOrderRecord(
       orderId: 'ORD-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}',
       createdAt: DateTime.now(),
-    GovernorateAr: locationLabel,
+      governorateAr: locationLabel,
       summaryText: summary,
       totalAmount: cartSubtotal,
       statusText: 'قيد التنفيذ والتوصيل',
@@ -940,6 +940,13 @@ class RoleDashboardScreen extends StatefulWidget {
   @override
   State<RoleDashboardScreen> createState() => _RoleDashboardScreenState();
 }
+
+  Widget _buildCurrentTabBody(GovernorateItem gov) {
+    switch (_bottomNavIndex) {
+      case 0:
+      default:
+        return _HomeTabView(
+          gov: gov,
           selectedCategoryId: _selectedCategoryFilterId,
           onSelectCategory: (catId) {
             setState(() {
@@ -961,28 +968,8 @@ class RoleDashboardScreen extends StatefulWidget {
             );
           },
         );
-      default:
-        return _HomeTabView(
-          gov: gov,
-          selectedCategoryId: _selectedCategoryFilterId,
-          onSelectCategory: (catId) {
-            setState(() {
-              _selectedCategoryFilterId =
-                  (_selectedCategoryFilterId == catId) ? null : catId;
-            });
-          },
-          onAddToCart: (prod) {
-            DughryAppStateStore.addToCart(prod);
-            setState(() {});
-          },
-        );
     }
   }
-Widget _buildCurrentTabBody(GovernorateItem gov) {
-    switch (_bottomNavIndex) {
-      case 0:
-        return _HomeTabView(
-          gov: gov,
           selectedCategoryId: _selectedCategoryFilterId,
           onSelectCategory: (catId) {
             setState(() {
