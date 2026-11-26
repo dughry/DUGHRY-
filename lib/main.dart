@@ -537,10 +537,8 @@ class RoleRegistrationForm extends StatefulWidget {
 
   @override
   State<RoleRegistrationForm> createState() => _RoleRegistrationFormState();
-}
-
-class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
- final _formKey = GlobalKey<FormState>();
+class _RoleRegistrationFormState extends State<_RoleRegistrationForm> {
+  final _formKey = GlobalKey<FormState>();
 
   final _nameCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
@@ -593,81 +591,6 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
   void dispose() {
     _nameCtrl.dispose();
     _phoneCtrl.dispose();
-    _addressCtrl.dispose();
-    _activityOrSpecCtrl.dispose();
-    _secondaryCtrl.dispose();
-    super.dispose();
-  }
-
-  void _submitRegistration() {
-    if (!_formKey.currentState!.validate()) return;
-
-    final isCustomer = widget.role == UserRoleType.customer;
-    final status = isCustomer
-        ? RegistrationStatus.active
-        : RegistrationStatus.pendingAdmin;
-
-    String primaryVal = _activityOrSpecCtrl.text.trim();
-    String secondaryVal = _secondaryCtrl.text.trim();
-    int graceVal = 0;
-
-    if (widget.role == UserRoleType.merchant) {
-      primaryVal = primaryVal.isEmpty ? 'نشاط تجاري متنوع' : primaryVal;
-      secondaryVal = 'القسم: $_merchantCategory';
-      graceVal = _graceDays;
-    } else if (widget.role == UserRoleType.doctor) {
-      primaryVal = primaryVal.isEmpty ? _medicalSpecialties.first : primaryVal;
-      secondaryVal = 'رقم القيد بالنقابة: ${secondaryVal.is
-    required this.icon,
-    required this.badge,
-  });
-}
-
-class DughryCartEntry {
-  final DughryCatalogProduct product;
-  int quantity;
-
-  DughryCartEntry({
-    required this.product,
-    this.quantity = 1,
-  });
-
-  double get lineTotal => product.price * quantity;
-}
-
-class DughryOrderRecord {
-  final String orderId;
-  final DateTime createdAt;
-  final String governorateAr;
-  final String summaryText;
-  final double totalAmount;
-  final String statusText;
-
-  const DughryOrderRecord({
-    required this.orderId,
-    required this.createdAt,
-    required this.governorateAr,
-    required this.summaryText,
-    required this.totalAmount,
-    required this.statusText,
-  });
-}
-
-class DughryAppStateStore {
-  static const List<DughryCategoryItem> categories12 = [
-    DughryCategoryItem(
-      id: 'groceries',
-      titleAr: 'سوبر ماركت',
-      icon: Icons.shopping_basket_rounded,
-      accentColor: Color(0xFF059669),
-      groupType: 'منتجات',
-    ),
-    DughryCategoryItem(
-      id: 'home_appliances',
-      titleAr: 'مستلزمات المنزل',
-      icon: Icons.kitchen_rounded,
-      accentColor: Color(0xFFD97706),
-      groupType: 'منتجات',
     ),
     DughryCategoryItem(
       id: 'fashion',
@@ -745,7 +668,7 @@ class DughryAppStateStore {
     DughryCatalogProduct(
       id: 'PRD-1',
       nameAr: 'أرز مصري فاخر 5 كجم',
-      categoryId: 'groceries',
+     categoryId: 'groceries',
       categoryTitleAr: 'سوبر ماركت',
       governorateAr: 'المنيا',
       price: 165.0,
@@ -827,7 +750,8 @@ class DughryAppStateStore {
       statusText: 'تم التسليم',
     ),
   ];
-static void addToCart(DughryCatalogProduct product) {
+
+  static void addToCart(DughryCatalogProduct product) {
     final idx = cartItems.indexWhere((e) => e.product.id == product.id);
     if (idx != -1) {
       cartItems[idx].quantity += 1;
@@ -919,3 +843,4 @@ class RoleDashboardScreen extends StatefulWidget {
         );
     }
   }
+}
