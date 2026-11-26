@@ -532,6 +532,7 @@ class RoleRegistrationForm extends StatefulWidget {
 
   @override
   State<RoleRegistrationForm> createState() => _RoleRegistrationFormState();
+);
 }
 
 class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
