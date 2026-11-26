@@ -599,6 +599,7 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
     _secondaryCtrl.dispose();
     super.dispose();
   }
+  }
 
   void _submitRegistration() {
     if (!_formKey.currentState!.validate()) return;
