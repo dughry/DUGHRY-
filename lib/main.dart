@@ -1166,46 +1166,55 @@ class DughryAppStateStore {
       groupType: 'خدمات',
     ),
   ];
-
-  static const List<DughryCatalogProduct> sampleProducts = [
+static const List<DughryCatalogProduct> sampleProducts = [
     DughryCatalogProduct(
       id: 'PRD-1',
       nameAr: 'أرز مصري فاخر 5 كجم',
       categoryId: 'groceries',
       categoryTitleAr: 'سوبر ماركت',
-      governorateAr: 'المنيا',
+      governorateAr: 'القاهرة',
       price: 165.0,
-      unitLabel: 'عبوة 5 كجم',
+      unitLabel: 'لكل 5 كجم',
       icon: Icons.shopping_bag_rounded,
       badge: 'الأكثر طلباً',
     ),
     DughryCatalogProduct(
       id: 'PRD-2',
-      nameAr: 'طقم أواني جرانيت 9 قطع',
+      nameAr: 'خلاط كهربائي 900 واط',
       categoryId: 'home_appliances',
-      categoryTitleAr: 'مستلزمات المنزل',
-      governorateAr: 'المنيا',
+      categoryTitleAr: 'أجهزة كهربائية',
+      governorateAr: 'الجيزة',
       price: 2450.0,
-      unitLabel: 'طقم كامل',
+      unitLabel: 'لكل قطعة',
       icon: Icons.soup_kitchen_rounded,
       badge: 'عرض دوجري',
     ),
     DughryCatalogProduct(
       id: 'PRD-3',
-      nameAr: 'كشف عيادة باطنة وجهاز هضمي',
+      nameAr: 'كشف جراحة وعظام',
       categoryId: 'doctors',
-      categoryTitleAr: 'عيادات وأطباء',
+      categoryTitleAr: 'عيادات ودكاترة',
       governorateAr: 'المنيا',
-      price: 200.0,
-      unitLabel: 'حجز كشف',
-      icon: Icons.medical_information_rounded,
-      badge: 'متاح اليوم',
+      price: 300.0,
+      unitLabel: 'لكل كشف',
+      icon: Icons.medical_services_rounded,
+      badge: 'حجز فوري',
     ),
     DughryCatalogProduct(
       id: 'PRD-4',
       nameAr: 'صيانة وتنظيف تكييف سبليت',
-  final UserRoleType initialRole;
-  final VoidCallback onLocationUpdated;
+      categoryId: 'technicians',
+      categoryTitleAr: 'عمال فنيين',
+      governorateAr: 'القاهرة',
+      price: 450.0,
+      unitLabel: 'لكل زيارة',
+      icon: Icons.home_repair_service_rounded,
+      badge: 'متاح اليوم',
+    ),
+  ];
+}
+
+class RoleDashboardScreen extends StatefulWidget {
 
   const RoleDashboardScreen({
     super.key,
