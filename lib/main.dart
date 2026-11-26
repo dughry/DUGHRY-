@@ -540,7 +540,7 @@ class RoleRegistrationForm extends StatefulWidget {
 }
 
 class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
-  final _formKey = GlobalKey<FormState>();
+ final _formKey = GlobalKey<FormState>();
 
   final _nameCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
@@ -617,57 +617,7 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
       graceVal = _graceDays;
     } else if (widget.role == UserRoleType.doctor) {
       primaryVal = primaryVal.isEmpty ? _medicalSpecialties.first : primaryVal;
-      secondaryVal = 'رقم القيد بالنقابة: ${secondaryVal.isEmpty ? "قيد المراجعة" : secondaryVal}';
-    } else if (widget.role == UserRoleType.technician) {
-      primaryVal = primaryVal.isEmpty ? _technicianCrafts.first : primaryVal;
-      secondaryVal = 'الخبرة: $_experienceYears سنوات • النطاق: ${secondaryVal.isEmpty ? _addressCtrl.text.trim() : secondaryVal}';
-    } else {
-      primaryVal = 'حساب عميل مباشر';
-      secondaryVal = 'دخول فوري مفعل';
-    }
-  }
-}
-
-// ============================================================================
-// تطبيق دوجري | DUGHRY - ملف lib/main.dart (الجزء 3 والأخير: 3 من 3)
-// الصفحة الرئيسية - سلايدر 3 شرائح - 12 قسماً دائرياً - السلة وطلباتي وحسابي
-// ============================================================================
-
-class DughryCategoryItem {
-  final String id;
-  final String titleAr;
-  final IconData icon;
-  final Color accentColor;
-  final String groupType; // منتجات | خدمات | أطباء | صيانة | توصيل
-
-  const DughryCategoryItem({
-    required this.id,
-    required this.titleAr,
-    required this.icon,
-    required this.accentColor,
-    required this.groupType,
-  });
-}
-
-class DughryCatalogProduct {
-  final String id;
-  final String nameAr;
-  final String categoryId;
-  final String categoryTitleAr;
-  final String governorateAr;
-  final double price;
-  final String unitLabel;
-  final IconData icon;
-  final String badge;
-
-  const DughryCatalogProduct({
-    required this.id,
-    required this.nameAr,
-    required this.categoryId,
-    required this.categoryTitleAr,
-    required this.governorateAr,
-    required this.price,
-    required this.unitLabel,
+      secondaryVal = 'رقم القيد بالنقابة: ${secondaryVal.is
     required this.icon,
     required this.badge,
   });
@@ -877,8 +827,7 @@ class DughryAppStateStore {
       statusText: 'تم التسليم',
     ),
   ];
-
-  static void addToCart(DughryCatalogProduct product) {
+static void addToCart(DughryCatalogProduct product) {
     final idx = cartItems.indexWhere((e) => e.product.id == product.id);
     if (idx != -1) {
       cartItems[idx].quantity += 1;
@@ -947,8 +896,6 @@ class RoleDashboardScreen extends StatefulWidget {
       default:
         return _HomeTabView(
           gov: gov,
-         return _HomeTabView(
-          gov: gov,
           selectedCategoryId: _selectedCategoryFilterId,
           onSelectCategory: (catId) {
             setState(() {
@@ -970,3 +917,5 @@ class RoleDashboardScreen extends StatefulWidget {
             );
           },
         );
+    }
+  }
