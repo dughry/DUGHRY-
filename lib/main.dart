@@ -947,52 +947,7 @@ class RoleDashboardScreen extends StatefulWidget {
       default:
         return _HomeTabView(
           gov: gov,
-          selectedCategoryId: _selectedCategoryFilterId,
-          onSelectCategory: (catId) {
-            setState(() {
-              _selectedCategoryFilterId =
-                  (_selectedCategoryFilterId == catId) ? null : catId;
-            });
-          },
-          onAddToCart: (prod) {
-            DughryAppStateStore.addToCart(prod);
-            setState(() {});
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: DughryColors.royalNavyCard,
-                content: Text(
-                  'محافظة ${gov.nameAr} متاحة قريباً في دوجري',
-                  style: const TextStyle(color: DughryColors.textLight),
-                ),
-              ),
-            );
-          },
-        );
-    }
-  }
-          selectedCategoryId: _selectedCategoryFilterId,
-          onSelectCategory: (catId) {
-            setState(() {
-              _selectedCategoryFilterId =
-                  (_selectedCategoryFilterId == catId) ? null : catId;
-            });
-          },
-          onAddToCart: (prod) {
-            DughryAppStateStore.addToCart(prod);
-            setState(() {});
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: DughryColors.royalNavyCard,
-                content: Text(
-                  'محافظة ${gov.nameAr} متاحة قريباً في دوجري',
-                  style: const TextStyle(color: DughryColors.textLight),
-                ),
-              ),
-            );
-          },
-        );
-      default:
-        return _HomeTabView(
+         return _HomeTabView(
           gov: gov,
           selectedCategoryId: _selectedCategoryFilterId,
           onSelectCategory: (catId) {
@@ -1004,7 +959,14 @@ class RoleDashboardScreen extends StatefulWidget {
           onAddToCart: (prod) {
             DughryAppStateStore.addToCart(prod);
             setState(() {});
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: DughryColors.royalNavyCard,
+                content: Text(
+                  'محافظة ${gov.nameAr} متاحة قريباً في دوجري',
+                  style: const TextStyle(color: DughryColors.textLight),
+                ),
+              ),
+            );
           },
         );
-    }
-  }
