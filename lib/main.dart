@@ -938,127 +938,7 @@ class RoleDashboardScreen extends StatefulWidget {
 
   @override
   State<RoleDashboardScreen> createState() => _RoleDashboardScreenState();
-}
-}
-class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
-  late UserRoleType _activeRole;
-  int _bottomNavIndex = 0; // 0: الرئيسية، 1: الأقسام، 2: السلة، 3: طلباتي، 4: حسابي
-  String? _selectedCategoryFilterId;
-
-  @override
-  void initState() {
-    super.initState();
-    _activeRole = widget.initialRole;
-    if (_activeRole == UserRoleType.admin) {
-      _bottomNavIndex = 4; // فتح تبويب الإدارة/الحساب مباشرة عند اختيار إدارة
-    }
-  }
-
-  void _refreshAll() {
-    widget.onLocationUpdated();
-    setState(() {});
-  }
-
-  void _openLocationSheet() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: DughryColors.royalNavyMid,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
-      ),
-      builder: (_) => _GovernorateGpsSheet(onLocationChanged: _refreshAll),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final gov = DughryLocationStore.currentGovernorate;
-
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: DughryColors.royalBackgroundGradient,
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // شريط علوي ثابت
-              Padding(
-                padding: const EdgeInsets.fromLTRB(14, 10, 14, 6),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: DughryColors.goldLight,
-                        size: 20,
-                      ),
-                      tooltip: 'العودة لشاشة البدء',
-                    ),
-                    Expanded(
-                      child: _LocationPillBar(
-                        governorateName: gov.nameAr,
-                        centerName: DughryLocationStore.selectedCenter,
-                        isAvailable: gov.isAvailable,
-                        isGpsSynced: DughryLocationStore.isGpsSynced,
-                        onTap: _openLocationSheet,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: _activeRole == UserRoleType.admin
-                            ? DughryColors.crimsonRed.withValues(alpha: 0.25)
-                            : DughryColors.royalNavyCard,
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: _activeRole == UserRoleType.admin
-                              ? DughryColors.crimsonRed
-                              : DughryColors.goldPrimary.withValues(alpha: 0.5),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            _activeRole.icon,
-                            size: 16,
-                            color: _activeRole == UserRoleType.admin
-                                ? DughryColors.crimsonRed
-                                : DughryColors.goldLight,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            _activeRole.labelAr,
-                            style: const TextStyle(
-                              color: DughryColors.textLight,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // المحتوى الرئيسي حسب التبويب السفلي
-              Expanded(
-                child: _buildCurrentTabBody(gov),
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: _buildBottomNavBar(),
-    );
-  }
-
-  Widget _buildCurrentTabBody(GovernorateItem gov) {
+Widget _buildCurrentTabBody(GovernorateItem gov) {
     switch (_bottomNavIndex) {
       case 0:
         return _HomeTabView(
@@ -1076,24 +956,71 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: DughryColors.royalNavyCard,
-                content: Textcontent: Text(
-                                    'محافظة ${gov.nameAr} متاحة قريباً في دوجري',
-                                    style: const TextStyle(color: DughryColors.textLight),
-                                  ),
-                                ),
-                              );
-                              return;
-                            }
-                            DughryLocationStore.selectedGovernorateId = gov.id;
-                            DughryLocationStore.selectedCenter =
-                                gov.availableCenters.isNotEmpty
-                                    ? gov.availableCenters.first
-                                    : 'المركز الرئيسي';
-                            DughryLocationStore.isGpsSynced = false;
-                            widget.onLocationChanged();
-                            Navigator.pop(context);
-      },
-    );
+                content: Text(
+                  'محافظة ${gov.nameAr} متاحة قريباً في دوجري',
+                  style: const TextStyle(color: DughryColors.textLight),
+                ),
+              ),
+            );
+          },
+        );
+      default:
+        return _HomeTabView(
+          gov: gov,
+          selectedCategoryId: _selectedCategoryFilterId,
+          onSelectCategory: (catId) {
+            setState(() {
+              _selectedCategoryFilterId =
+                  (_selectedCategoryFilterId == catId) ? null : catId;
+            });
+          },
+          onAddToCart: (prod) {
+            DughryAppStateStore.addToCart(prod);
+            setState(() {});
+          },
+        );
+    }
   }
-}
-}
+Widget _buildCurrentTabBody(GovernorateItem gov) {
+    switch (_bottomNavIndex) {
+      case 0:
+        return _HomeTabView(
+          gov: gov,
+          selectedCategoryId: _selectedCategoryFilterId,
+          onSelectCategory: (catId) {
+            setState(() {
+              _selectedCategoryFilterId =
+                  (_selectedCategoryFilterId == catId) ? null : catId;
+            });
+          },
+          onAddToCart: (prod) {
+            DughryAppStateStore.addToCart(prod);
+            setState(() {});
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: DughryColors.royalNavyCard,
+                content: Text(
+                  'محافظة ${gov.nameAr} متاحة قريباً في دوجري',
+                  style: const TextStyle(color: DughryColors.textLight),
+                ),
+              ),
+            );
+          },
+        );
+      default:
+        return _HomeTabView(
+          gov: gov,
+          selectedCategoryId: _selectedCategoryFilterId,
+          onSelectCategory: (catId) {
+            setState(() {
+              _selectedCategoryFilterId =
+                  (_selectedCategoryFilterId == catId) ? null : catId;
+            });
+          },
+          onAddToCart: (prod) {
+            DughryAppStateStore.addToCart(prod);
+            setState(() {});
+          },
+        );
+    }
+  }
