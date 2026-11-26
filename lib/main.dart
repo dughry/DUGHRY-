@@ -507,14 +507,14 @@ class DughryPortalStore {
       final old = records[idx];
       records[idx] = RegistrationRequestRecord(
         id: old.id,
-        role: old.role,
+     role: old.role,
         fullName: old.fullName,
         phone: old.phone,
-        governorate: old.governorate,
-        centerOrAddress: old.centerOrAddress,
-        primarySpecialtyOrActivity: old.primarySpecialtyOrActivity,
+        governorateAr: old.governorateAr,
+        addressOrCenter: old.addressOrCenter,
+        primaryDetail: old.primaryDetail,
         secondaryDetail: old.secondaryDetail,
-        freeGraceDays: old.freeGraceDays,
+        gracePeriodDays: old.gracePeriodDays,
         status: newStatus,
         createdAt: old.createdAt,
       );
@@ -524,7 +524,7 @@ class DughryPortalStore {
 
 // ----------------------------------------------------------------------------
 // 6. نموذج التسجيل المخصص لكل دور (عميل / تاجر / دكتور / فني)
-// ----------------------------------------------------------------------------}
+// ----------------------------------------------------------------------------
 class RoleRegistrationForm extends StatefulWidget {
   final UserRoleType role;
   final VoidCallback onSubmitted;
@@ -537,7 +537,9 @@ class RoleRegistrationForm extends StatefulWidget {
 
   @override
   State<RoleRegistrationForm> createState() => _RoleRegistrationFormState();
-class _RoleRegistrationFormState extends State<_RoleRegistrationForm> {
+}
+
+class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
   final _formKey = GlobalKey<FormState>();
 
   final _nameCtrl = TextEditingController();
