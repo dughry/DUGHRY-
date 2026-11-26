@@ -912,7 +912,7 @@ class DughryAppStateStore {
     final order = DughryOrderRecord(
       orderId: 'ORD-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}',
       createdAt: DateTime.now(),
-      governorateAr: locationLabel,
+    GovernorateAr: locationLabel,
       summaryText: summary,
       totalAmount: cartSubtotal,
       statusText: 'قيد التنفيذ والتوصيل',
@@ -938,11 +938,7 @@ class RoleDashboardScreen extends StatefulWidget {
 
   @override
   State<RoleDashboardScreen> createState() => _RoleDashboardScreenState();
-Widget _buildCurrentTabBody(GovernorateItem gov) {
-    switch (_bottomNavIndex) {
-      case 0:
-        return _HomeTabView(
-          gov: gov,
+}
           selectedCategoryId: _selectedCategoryFilterId,
           onSelectCategory: (catId) {
             setState(() {
