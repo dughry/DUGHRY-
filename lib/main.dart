@@ -400,6 +400,11 @@ class _SplashScreenState extends State<SplashScreen>
           gradient: DughryColors.royalBackgroundGradient,
         ),
         child: SafeArea(
+          child: const SizedBox.shrink(),
+        ),
+      ),
+    );
+  }
           child// ============================================================================
 // تطبيق دوجري | DUGHRY - ملف lib/main.dart (الجزء 2 من 3)
 // نماذج التسجيل المنفصلة - حالة الانتظار - حماية الإدارة واعتماد/رفض الطلبات
