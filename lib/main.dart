@@ -1086,17 +1086,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
                             DughryLocationStore.isGpsSynced = false;
                             widget.onLocationChanged();
                             Navigator.pop(context);
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+      },
     );
   }
 }
