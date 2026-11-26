@@ -934,7 +934,7 @@ class RoleDashboardScreen extends StatefulWidget {
   @override
   State<RoleDashboardScreen> createState() => _RoleDashboardScreenState();
 }
-
+}
 class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
   late UserRoleType _activeRole;
   int _bottomNavIndex = 0; // 0: الرئيسية، 1: الأقسام، 2: السلة، 3: طلباتي، 4: حسابي
