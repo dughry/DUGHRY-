@@ -1203,7 +1203,7 @@ class DughryAppStateStore {
     ),
     DughryCatalogProduct(
       id: 'PRD-4',
-      nameAr: 'صيانةclass RoleDashboardScreen extends StatefulWidget {
+      nameAr: 'صيانة وتنظيف تكييف سبليت',
   final UserRoleType initialRole;
   final VoidCallback onLocationUpdated;
 
