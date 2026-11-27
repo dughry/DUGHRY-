@@ -2027,10 +2027,9 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
                 ),
               ),
             ),
-          ],
+         ],
         ] else ...[
           DropdownButtonFormField<UserRoleType>(
-            DropdownButtonFormField<UserRoleType>(
             value: _formRole,
             dropdownColor: DughryColors.royalNavyCard,
             decoration: const InputDecoration(
@@ -2080,7 +2079,9 @@ class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
     super.initState();
     _tempGovId = DughryLocationStore.selectedGovernorateId;
     _tempCenter = DughryLocationStore.selectedCenter;
-  }@override
+  }
+
+  @override
   Widget build(BuildContext context) {
     final gov = DughryLocationStore.governorates.firstWhere(
       (g) => g.id == _tempGovId,
