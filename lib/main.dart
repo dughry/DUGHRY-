@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -335,7 +334,9 @@ class _SplashScreenState extends State<SplashScreen>
         );
       },
     );
-  }void _openLocationSelectorSheet() {
+  }
+
+  void _openLocationSelectorSheet() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -888,7 +889,7 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: _selectedGov,
+            initialValue: _selectedGov,
             dropdownColor: DughryColors.royalNavyCard,
             decoration: const InputDecoration(
               labelText: 'المحافظة',
@@ -916,7 +917,7 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
           if (widget.role == UserRoleType.merchant) ...[
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              value: _merchantCategory,
+              initialValue: _merchantCategory,
               dropdownColor: DughryColors.royalNavyCard,
               decoration: const InputDecoration(
                 labelText: 'تصنيف النشاط التجاري',
@@ -1067,7 +1068,7 @@ class DughryOrderRecord {
   final DateTime createdAt;
   final String governorateAr;
   final String summaryText;
- final double totalAmount;
+  final double totalAmount;
   final String statusText;
 
   const DughryOrderRecord({
@@ -1168,22 +1169,13 @@ class DughryAppStateStore {
     ),
   ];
 
-  static final List<dynamic> cartItems = [];
+  static final List<DughryCartEntry> cartItems = [];
   static final List<DughryOrderRecord> orders = [];
 
   static int get totalCartCount {
     int total = 0;
     for (final item in cartItems) {
-      try {
-        final q = (item as dynamic).quantity;
-        if (q is int) {
-          total += q;
-        } else {
-          total += 1;
-        }
-      } catch (_) {
-        total += 1;
-      }
+      total += item.quantity;
     }
     return total;
   }
@@ -1191,54 +1183,34 @@ class DughryAppStateStore {
   static double get cartSubtotal {
     double sum = 0;
     for (final item in cartItems) {
-      try {
-        final d = item as dynamic;
-        final double price =
-            ((d.product?.price ?? d.price ?? 0) as num).toDouble();
-        final int qty = ((d.quantity ?? 1) as int);
-        sum += price * qty;
-      } catch (_) {}
+      sum += item.lineTotal;
     }
     return sum;
   }
 
-  static void addToCart(dynamic product) {
+  static void addToCart(DughryCatalogProduct? product) {
     if (product == null) return;
     for (final item in cartItems) {
-      try {
-        final d = item as dynamic;
-        final existingId = d.product?.id ?? d.id;
-        final incomingId = product.id;
-        if (existingId != null &&
-            incomingId != null &&
-            existingId == incomingId) {
-          d.quantity = (d.quantity ?? 1) + 1;
-          return;
-        }
-      } catch (_) {}
+      if (item.product.id == product.id) {
+        item.quantity += 1;
+        return;
+      }
     }
-    cartItems.add(product);
+    cartItems.add(DughryCartEntry(product: product, quantity: 1));
   }
 
-  static void decrementOrRemove(dynamic itemOrId) {
-    if (itemOrId == null) return;
+  static void decrementOrRemove(String? productId) {
+    if (productId == null) return;
     for (int i = 0; i < cartItems.length; i++) {
-      try {
-        final item = cartItems[i] as dynamic;
-        final itemId = item.product?.id ?? item.id;
-        final matches = item == itemOrId ||
-            (itemId != null && itemId == itemOrId) ||
-            (item.product != null && item.product == itemOrId);
-        if (matches) {
-          final currentQty = item.quantity;
-          if (currentQty is int && currentQty > 1) {
-            item.quantity = currentQty - 1;
-          } else {
-            cartItems.removeAt(i);
-          }
-          return;
+      final item = cartItems[i];
+      if (item.product.id == productId) {
+        if (item.quantity > 1) {
+          item.quantity -= 1;
+        } else {
+          cartItems.removeAt(i);
         }
-      } catch (_) {}
+        return;
+      }
     }
   }
 
@@ -1275,7 +1247,7 @@ class DughryAppStateStore {
       id: 'PRD-2',
       nameAr: 'خلاط كهربائي 900 واط',
       categoryId: 'home_appliances',
-      categoryTitleAr: 'أجهزة كهربائية',
+      categoryTitleAr: 'مستلزمات المنزل',
       governorateAr: 'الجيزة',
       price: 2450.0,
       unitLabel: 'لكل قطعة',
@@ -1286,7 +1258,7 @@ class DughryAppStateStore {
       id: 'PRD-3',
       nameAr: 'كشف جراحة وعظام',
       categoryId: 'doctors',
-      categoryTitleAr: 'عيادات ودكاترة',
+      categoryTitleAr: 'عيادات وأطباء',
       governorateAr: 'المنيا',
       price: 300.0,
       unitLabel: 'لكل كشف',
@@ -1296,8 +1268,8 @@ class DughryAppStateStore {
     DughryCatalogProduct(
       id: 'PRD-4',
       nameAr: 'صيانة وتنظيف تكييف سبليت',
-      categoryId: 'technicians',
-      categoryTitleAr: 'عمال فنيين',
+      categoryId: 'maintenance',
+      categoryTitleAr: 'صيانة وفنيون',
       governorateAr: 'القاهرة',
       price: 450.0,
       unitLabel: 'لكل زيارة',
@@ -1320,6 +1292,7 @@ class RoleDashboardScreen extends StatefulWidget {
   @override
   State<RoleDashboardScreen> createState() => _RoleDashboardScreenState();
 }
+
 class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
   late UserRoleType _activeRole;
   int _bottomNavIndex = 0;
@@ -1353,10 +1326,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
             });
           },
           onAddToCart: (prod) {
-            final dynamic store = DughryAppStateStore;
-            try {
-              store.addToCart(prod);
-            } catch (_) {}
+            DughryAppStateStore.addToCart(prod);
             setState(() {});
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -1439,7 +1409,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
               ),
             ),
             Text(
-              '${gov.nameAr} -${DughryLocationStore.selectedCenter}',
+              '${gov.nameAr} - ${DughryLocationStore.selectedCenter}',
               style: const TextStyle(
                 color: DughryColors.goldLight,
                 fontSize: 12,
@@ -1514,9 +1484,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
       ),
     );
   }
-}
-
-class _HomeTabView extends StatelessWidget {
+}class _HomeTabView extends StatelessWidget {
   final GovernorateItem gov;
   final String? selectedCategoryId;
   final ValueChanged<String> onSelectCategory;
@@ -1671,7 +1639,7 @@ class _HomeTabView extends StatelessWidget {
                 ),
               ),
               subtitle: Text(
-                '${prod.categoryTitleAr} • ${prod.governorateAr} •${prod.unitLabel}\n${prod.price.toStringAsFixed(0)} ج.م (${prod.badge})',
+                '${prod.categoryTitleAr} • ${prod.governorateAr} • ${prod.unitLabel}\n${prod.price.toStringAsFixed(0)} ج.م (${prod.badge})',
                 style: const TextStyle(
                   color: DughryColors.textSecondary,
                   fontSize: 12,
@@ -1853,16 +1821,14 @@ class _CartTabView extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   final created = DughryAppStateStore.checkoutCart(locationLabel);
-                  if (created != null) {
-                    onChanged();
-                    onOrderPlaced();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: DughryColors.royalNavySurface,
-                        content: Text('تم تأكيد الطلب ${created.orderId}'),
-                      ),
-                    );
-                  }
+                  onChanged();
+                  onOrderPlaced();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: DughryColors.royalNavySurface,
+                      content: Text('تم تأكيد الطلب ${created.orderId}'),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: DughryColors.goldPrimary,
@@ -1907,7 +1873,7 @@ class _OrdersTabView extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 10),
           child: ListTile(
             title: Text(
-              'طلب #${o.orderId} •${o.statusText}',
+              'طلب #${o.orderId} • ${o.statusText}',
               style: const TextStyle(
                 color: DughryColors.goldLight,
                 fontWeight: FontWeight.bold,
@@ -1933,10 +1899,10 @@ class _AccountAndAdminTabView extends StatefulWidget {
   final VoidCallback onUnlockAdmin;
   final VoidCallback onRefresh;
 
- const _AccountAndAdminTabView({
+  const _AccountAndAdminTabView({
     required this.activeRole,
     required this.onRoleChanged,
-   required this.adminUnlocked,
+    required this.adminUnlocked,
     required this.adminPassCtrl,
     required this.onUnlockAdmin,
     required this.onRefresh,
@@ -1951,13 +1917,13 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
 
   @override
   void initState() {
-   super.initState();
+    super.initState();
     _formRole = widget.activeRole == UserRoleType.admin
         ? UserRoleType.customer
         : widget.activeRole;
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     final isAdminMode = widget.activeRole == UserRoleType.admin;
 
@@ -2018,21 +1984,70 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(width: 8),
-            DropdownButton<UserRoleType>(
-              value: _formRole,
-              dropdownColor: DughryColors.royalNavyCard,
-              items: UserRoleType.values
-                  .where((r) => r != UserRoleType.admin)
-                  .map(
-                    (r) => DropdownMenuItem(value: r, child: Text(r.labelAr)),
-                  )
-                  .toList(),
-              onChanged: (val) {
-                if (val != null) setState(() => _formRole = val);
-              },
+            const SizedBox(height: 8),
+            ...DughryPortalStore.records.map(
+              (req) => Card(
+                color: DughryColors.royalNavyCard,
+                margin: const EdgeInsets.only(bottom: 8),
+                child: ListTile(
+                  title: Text(
+                    '${req.fullName} (${req.role.labelAr})',
+                    style: const TextStyle(
+                      color: DughryColors.textLight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(
+                    '${req.governorateAr} - ${req.addressOrCenter}\n${req.primaryDetail} • ${req.status.labelAr}',
+                    style: const TextStyle(
+                      color: DughryColors.textSecondary,
+                      fontSize: 12,
+                    ),
+                  ),
+                  isThreeLine: true,
+                  trailing: PopupMenuButton<RegistrationStatus>(
+                    icon: const Icon(
+                      Icons.more_vert_rounded,
+                      color: DughryColors.goldLight,
+                    ),
+                    onSelected: (st) {
+                      DughryPortalStore.updateStatus(req.id, st);
+                      widget.onRefresh();
+                      setState(() {});
+                    },
+                    itemBuilder: (_) => RegistrationStatus.values
+                        .map(
+                          (st) => PopupMenuItem(
+                            value: st,
+                            child: Text(st.labelAr),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ),
             ),
-          const SizedBox(height: 10),
+          ],
+        ] else ...[
+          DropdownButtonFormField<UserRoleType>(
+            initialValue: _formRole,
+            dropdownColor: DughryColors.royalNavyCard,
+            decoration: const InputDecoration(
+              labelText: 'نوع الحساب المطلوب تسجيله',
+              filled: true,
+              fillColor: DughryColors.royalNavyCard,
+            ),
+            items: UserRoleType.values
+                .where((r) => r != UserRoleType.admin)
+                .map(
+                  (r) => DropdownMenuItem(value: r, child: Text(r.labelAr)),
+                )
+                .toList(),
+            onChanged: (val) {
+              if (val != null) setState(() => _formRole = val);
+            },
+          ),
+          const SizedBox(height: 12),
           RoleRegistrationForm(
             role: _formRole,
             onSubmitted: () {
@@ -2042,12 +2057,10 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
           ),
         ],
       ],
-    ],
     );
-  
-    
+  }
 }
-}
+
 class _GovernorateGpsSheet extends StatefulWidget {
   final VoidCallback onLocationChanged;
 
@@ -2055,7 +2068,9 @@ class _GovernorateGpsSheet extends StatefulWidget {
 
   @override
   State<_GovernorateGpsSheet> createState() => _GovernorateGpsSheetState();
-}class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
+}
+
+class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
   late String _tempGovId;
   late String _tempCenter;
 
@@ -2064,9 +2079,7 @@ class _GovernorateGpsSheet extends StatefulWidget {
     super.initState();
     _tempGovId = DughryLocationStore.selectedGovernorateId;
     _tempCenter = DughryLocationStore.selectedCenter;
-  }
-
-  @override
+  }@override
   Widget build(BuildContext context) {
     final gov = DughryLocationStore.governorates.firstWhere(
       (g) => g.id == _tempGovId,
@@ -2091,14 +2104,14 @@ class _GovernorateGpsSheet extends StatefulWidget {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              value: _tempGovId,
+              initialValue: _tempGovId,
               dropdownColor: DughryColors.royalNavyCard,
               decoration: const InputDecoration(
                 labelText: 'المحافظة',
                 filled: true,
                 fillColor: DughryColors.royalNavyCard,
               ),
-             items: DughryLocationStore.governorates
+              items: DughryLocationStore.governorates
                   .map(
                     (g) => DropdownMenuItem(
                       value: g.id,
@@ -2125,7 +2138,7 @@ class _GovernorateGpsSheet extends StatefulWidget {
             const SizedBox(height: 12),
             if (gov.availableCenters.isNotEmpty)
               DropdownButtonFormField<String>(
-                value: gov.availableCenters.contains(_tempCenter)
+                initialValue: gov.availableCenters.contains(_tempCenter)
                     ? _tempCenter
                     : gov.availableCenters.first,
                 dropdownColor: DughryColors.royalNavyCard,
@@ -2207,7 +2220,7 @@ class _NotificationTile extends StatelessWidget {
       trailing: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: badgeColor.withOpacity(0.2),
+          color: badgeColor.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: badgeColor),
         ),
