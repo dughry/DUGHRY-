@@ -1129,7 +1129,28 @@ class DughryAppStateStore {
       titleAr: 'صيانة وفنيون',
       icon: Icons.handyman_rounded,
       accentColor: Color(0xFFB45309),
-      groupType: 'خدمات',
+      groupType: 'صيانة',
+    ),
+    DughryCategoryItem(
+      id: 'ac_plumbing',
+      titleAr: 'تكييف وسباكة',
+      icon: Icons.plumbing_rounded,
+      accentColor: Color(0xFF0369A1),
+      groupType: 'صيانة',
+    ),
+    DughryCategoryItem(
+      id: 'delivery',
+      titleAr: 'توصيل سريع',
+      icon: Icons.delivery_dining_rounded,
+      accentColor: Color(0xFFE11D48),
+      groupType: 'توصيل',
+    ),
+    DughryCategoryItem(
+      id: 'shipping',
+      titleAr: 'شحن ونقل',
+      icon: Icons.local_shipping_rounded,
+      accentColor: Color(0xFF4338CA),
+      groupType: 'توصيل',
     ),
   ];
 
@@ -1158,7 +1179,8 @@ class DughryAppStateStore {
     for (final item in cartItems) {
       try {
         final d = item as dynamic;
-        final double price = ((d.product?.price ?? d.price ?? 0) as num).toDouble();
+        final double price =
+            ((d.product?.price ?? d.price ?? 0) as num).toDouble();
         final int qty = ((d.quantity ?? 1) as int);
         sum += price * qty;
       } catch (_) {}
@@ -1173,7 +1195,9 @@ class DughryAppStateStore {
         final d = item as dynamic;
         final existingId = d.product?.id ?? d.id;
         final incomingId = product.id;
-        if (existingId != null && incomingId != null && existingId == incomingId) {
+        if (existingId != null &&
+            incomingId != null &&
+            existingId == incomingId) {
           d.quantity = (d.quantity ?? 1) + 1;
           return;
         }
@@ -1208,7 +1232,8 @@ class DughryAppStateStore {
     final amount = cartSubtotal;
     final count = totalCartCount;
     final record = DughryOrderRecord(
-      orderId: 'ORD-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}',
+      orderId:
+          'ORD-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}',
       createdAt: DateTime.now(),
       governorateAr: locationLabel,
       summaryText: 'طلب يحتوي على $count عنصر من دوجري',
@@ -1220,24 +1245,6 @@ class DughryAppStateStore {
     return record;
   }
 }
-      groupType: 'صيانة',
-    ),
-    DughryCategoryItem(
-      id: 'ac_plumbing',
-      titleAr: 'تكييف وسباكة',
-      icon: Icons.plumbing_rounded,
-      accentColor: Color(0xFF0369A1),
-      groupType: 'صيانة',
-    ),
-    DughryCategoryItem(
-      id: 'delivery',
-      titleAr: 'توصيل سريع',
-      icon: Icons.delivery_dining_rounded,
-      accentColor: Color(0xFFE11D48),
-      groupType: 'توصيل',
-    ),
-    DughryCategoryItem(
-      id: 'shipping',
       titleAr: 'شحن وطلبات',
       icon: Icons.local_shipping_rounded,
       accentColor: Color(0xFF4338CA),
@@ -1931,7 +1938,7 @@ class _AccountAndAdminTabView extends StatefulWidget {
   final VoidCallback onUnlockAdmin;
   final VoidCallback onRefresh;
 
-  const _AccountAndAdminTabView({
+ const _AccountAndAdminTabView({
     required this.activeRole,
     required this.onRoleChanged,
     required this.adminUnlocked,
@@ -1949,7 +1956,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
 
   @override
   void initState() {
-   super.initState();
+    super.initState();
     _formRole = widget.activeRole == UserRoleType.admin
         ? UserRoleType.customer
         : widget.activeRole;
