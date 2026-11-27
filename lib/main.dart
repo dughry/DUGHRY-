@@ -1252,7 +1252,7 @@ class DughryAppStateStore {
       governorateAr: locationLabel,
       summaryText: 'طلب يحتوي على $count عنصر من دوجري',
       totalAmount: amount,
-      statusText: 'تم استلام الطلب بنجاح',
+    statusText: 'تم استلام الطلب بنجاح',
     );
     orders.insert(0, record);
     cartItems.clear();
@@ -1411,7 +1411,9 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
           onRefresh: () => setState(() {}),
         );
     }
-  }@override
+  }
+
+  @override
   Widget build(BuildContext context) {
     final gov = DughryLocationStore.currentGovernorate;
 
@@ -1450,7 +1452,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
           IconButton(
             onPressed: () {
               showModalBottomSheet(
-             Context: context,
+                context: context,
                 isScrollControlled: true,
                 backgroundColor: DughryColors.royalNavyMid,
                 shape: const RoundedRectangleBorder(
@@ -1950,9 +1952,9 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
 
   @override
   void initState() {
-    super.initState();
+   super.initState();
     _formRole = widget.activeRole == UserRoleType.admin
-  ? UserRoleType.customer
+        ? UserRoleType.customer
         : widget.activeRole;
   }
 
