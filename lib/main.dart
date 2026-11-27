@@ -1095,7 +1095,8 @@ class DughryAppStateStore {
       icon: Icons.kitchen_rounded,
       accentColor: Color(0xFFD4AF37),
       groupType: 'منتجات',
-    ),DughryCategoryItem(
+    ),
+    DughryCategoryItem(
       id: 'fashion',
       titleAr: 'أزياء وموضة',
       icon: Icons.checkroom_rounded,
@@ -1128,6 +1129,97 @@ class DughryAppStateStore {
       titleAr: 'صيانة وفنيون',
       icon: Icons.handyman_rounded,
       accentColor: Color(0xFFB45309),
+      groupType: 'خدمات',
+    ),
+  ];
+
+  static final List<dynamic> cartItems = [];
+  static final List<DughryOrderRecord> orders = [];
+
+  static int get totalCartCount {
+    int total = 0;
+    for (final item in cartItems) {
+      try {
+        final q = (item as dynamic).quantity;
+        if (q is int) {
+          total += q;
+        } else {
+          total += 1;
+        }
+      } catch (_) {
+        total += 1;
+      }
+    }
+    return total;
+  }
+
+  static double get cartSubtotal {
+    double sum = 0;
+    for (final item in cartItems) {
+      try {
+        final d = item as dynamic;
+        final double price = ((d.product?.price ?? d.price ?? 0) as num).toDouble();
+        final int qty = ((d.quantity ?? 1) as int);
+        sum += price * qty;
+      } catch (_) {}
+    }
+    return sum;
+  }
+
+  static void addToCart(dynamic product) {
+    if (product == null) return;
+    for (final item in cartItems) {
+      try {
+        final d = item as dynamic;
+        final existingId = d.product?.id ?? d.id;
+        final incomingId = product.id;
+        if (existingId != null && incomingId != null && existingId == incomingId) {
+          d.quantity = (d.quantity ?? 1) + 1;
+          return;
+        }
+      } catch (_) {}
+    }
+    cartItems.add(product);
+  }
+
+  static void decrementOrRemove(dynamic itemOrId) {
+    if (itemOrId == null) return;
+    for (int i = 0; i < cartItems.length; i++) {
+      try {
+        final item = cartItems[i] as dynamic;
+        final itemId = item.product?.id ?? item.id;
+        final matches = item == itemOrId ||
+            (itemId != null && itemId == itemOrId) ||
+            (item.product != null && item.product == itemOrId);
+        if (matches) {
+          final currentQty = item.quantity;
+          if (currentQty is int && currentQty > 1) {
+            item.quantity = currentQty - 1;
+          } else {
+            cartItems.removeAt(i);
+          }
+          return;
+        }
+      } catch (_) {}
+    }
+  }
+
+  static DughryOrderRecord checkoutCart(String locationLabel) {
+    final amount = cartSubtotal;
+    final count = totalCartCount;
+    final record = DughryOrderRecord(
+      orderId: 'ORD-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}',
+      createdAt: DateTime.now(),
+      governorateAr: locationLabel,
+      summaryText: 'طلب يحتوي على $count عنصر من دوجري',
+      totalAmount: amount,
+      statusText: 'تم استلام الطلب بنجاح',
+    );
+    orders.insert(0, record);
+    cartItems.clear();
+    return record;
+  }
+}
       groupType: 'صيانة',
     ),
     DughryCategoryItem(
@@ -1357,7 +1449,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
           IconButton(
             onPressed: () {
               showModalBottomSheet(
-                context: context,
+             Context: context,
                 isScrollControlled: true,
                 backgroundColor: DughryColors.royalNavyMid,
                 shape: const RoundedRectangleBorder(
@@ -1366,7 +1458,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
                 builder: (_) => _GovernorateGpsSheet(
                   onLocationChanged: () {
                     setState(() {});
-                    widget.onLocationUpdated();
+                    widget.onLocationUpdated?.call();
                   },
                 ),
               );
@@ -1927,7 +2019,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
             const SizedBox(width: 8),
             DropdownButton<UserRoleType>(
               value: _formRole,
-              dropdownColor: DughryColors.royalNavyCard,
+             dropdownColor: DughryColors.royalNavyCard,
               items: UserRoleType.values
                   .where((r) => r != UserRoleType.admin)
                   .map(
@@ -1938,8 +2030,6 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
                 if (val != null) setState(() => _formRole = val);
               },
             ),
-            ],
-          ),
           const SizedBox(height: 10),
           RoleRegistrationForm(
             role: _formRole,
@@ -2004,7 +2094,7 @@ class _GovernorateGpsSheet extends StatefulWidget {
                 filled: true,
                 fillColor: DughryColors.royalNavyCard,
               ),
-              items: DughryLocationStore.governorates
+             items: DughryLocationStore.governorates
                   .map(
                     (g) => DropdownMenuItem(
                       value: g.id,
