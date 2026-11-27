@@ -2097,7 +2097,7 @@ class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
-              'اختيار المحافظة والمركز',
+             'اختيار المحافظة والمركز',
               style: TextStyle(
                 color: DughryColors.goldLight,
                 fontSize: 17,
@@ -2106,7 +2106,7 @@ class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              initialValue: _tempGovId,
+              value: _tempGovId,
               dropdownColor: DughryColors.royalNavyCard,
               decoration: const InputDecoration(
                 labelText: 'المحافظة',
@@ -2140,7 +2140,7 @@ class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
             const SizedBox(height: 12),
             if (gov.availableCenters.isNotEmpty)
               DropdownButtonFormField<String>(
-                initialValue: gov.availableCenters.contains(_tempCenter)
+                value: gov.availableCenters.contains(_tempCenter)
                     ? _tempCenter
                     : gov.availableCenters.first,
                 dropdownColor: DughryColors.royalNavyCard,
@@ -2222,7 +2222,7 @@ class _NotificationTile extends StatelessWidget {
       trailing: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: badgeColor.withValues(alpha: 0.2),
+          color: badgeColor.withOpacity(0.2),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: badgeColor),
         ),
