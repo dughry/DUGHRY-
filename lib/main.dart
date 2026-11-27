@@ -2043,7 +2043,8 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
         ],
       ],
     );
-  }
+  ],
+    );
 }
 
 class _GovernorateGpsSheet extends StatefulWidget {
@@ -2205,7 +2206,7 @@ class _NotificationTile extends StatelessWidget {
       trailing: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: badgeColor.withValues(alpha: 0.2),
+          color: badgeColor.withOpacity(0.2),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: badgeColor),
         ),
