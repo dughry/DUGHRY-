@@ -1237,12 +1237,11 @@ class DughryAppStateStore {
             cartItems.removeAt(i);
           }
           return;
-        }
-      } catch (_) {}
+    } catch (_) {}
     }
   }
 
- static DughryOrderRecord checkoutCart(String locationLabel) {
+  static DughryOrderRecord checkoutCart(String locationLabel) {
     final amount = cartSubtotal;
     final count = totalCartCount;
     final record = DughryOrderRecord(
@@ -1252,7 +1251,7 @@ class DughryAppStateStore {
       governorateAr: locationLabel,
       summaryText: 'طلب يحتوي على $count عنصر من دوجري',
       totalAmount: amount,
-    statusText: 'تم استلام الطلب بنجاح',
+      statusText: 'تم استلام الطلب بنجاح',
     );
     orders.insert(0, record);
     cartItems.clear();
@@ -1958,7 +1957,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
         : widget.activeRole;
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     final isAdminMode = widget.activeRole == UserRoleType.admin;
 
