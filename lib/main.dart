@@ -1242,7 +1242,7 @@ class DughryAppStateStore {
     }
   }
 
-  static DughryOrderRecord checkoutCart(String locationLabel) {
+ static DughryOrderRecord checkoutCart(String locationLabel) {
     final amount = cartSubtotal;
     final count = totalCartCount;
     final record = DughryOrderRecord(
@@ -1252,7 +1252,7 @@ class DughryAppStateStore {
       governorateAr: locationLabel,
       summaryText: 'طلب يحتوي على $count عنصر من دوجري',
       totalAmount: amount,
-     statusText: 'تم استلام الطلب بنجاح',
+      statusText: 'تم استلام الطلب بنجاح',
     );
     orders.insert(0, record);
     cartItems.clear();
@@ -1260,7 +1260,7 @@ class DughryAppStateStore {
   }
 }
 
-static const List<DughryCatalogProduct> sampleProducts = [
+  static const List<DughryCatalogProduct> sampleProducts = [
     DughryCatalogProduct(
       id: 'PRD-1',
       nameAr: 'أرز مصري فاخر 5 كجم',
@@ -1306,7 +1306,6 @@ static const List<DughryCatalogProduct> sampleProducts = [
       badge: 'متاح اليوم',
     ),
   ];
-}
 
 class RoleDashboardScreen extends StatefulWidget {
   final UserRoleType initialRole;
@@ -1953,11 +1952,11 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
   void initState() {
     super.initState();
     _formRole = widget.activeRole == UserRoleType.admin
-        ? UserRoleType.customer
+  ? UserRoleType.customer
         : widget.activeRole;
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     final isAdminMode = widget.activeRole == UserRoleType.admin;
 
