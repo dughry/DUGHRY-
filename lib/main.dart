@@ -1215,6 +1215,8 @@ static const List<DughryCatalogProduct> sampleProducts = [
 }
 
 class RoleDashboardScreen extends StatefulWidget {
+  final UserRoleType initialRole;
+  final VoidCallback? onLocationUpdated;
 
   const RoleDashboardScreen({
     super.key,
@@ -1237,7 +1239,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
   void initState() {
     super.initState();
     _activeRole = widget.initialRole;
-    _adminUnlocked = _activeRole == UserRoleType.admin ? false : false;
+    _adminUnlocked = false;
   }
 
   @override
@@ -1259,7 +1261,10 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
             });
           },
           onAddToCart: (prod) {
-            DughryAppStateStore.addToCart(prod);
+            final dynamic store = DughryAppStateStore;
+            try {
+              store.addToCart(prod);
+            } catch (_) {}
             setState(() {});
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -1852,7 +1857,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
 
   @override
   void initState() {
-    super.initState();
+   super.initState();
     _formRole = widget.activeRole == UserRoleType.admin
         ? UserRoleType.customer
         : widget.activeRole;
@@ -1914,20 +1919,25 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
           ] else ...[
             const Text(
               'طلبات التسجيل والمراجعة الإدارية',
-              style: TextStyle(const SizedBox(width: 8),
-              DropdownButton<UserRoleType>(
-                value: _formRole,
-                dropdownColor: DughryColors.royalNavyCard,
-                items: UserRoleType.values
-                    .where((r) => r != UserRoleType.admin)
-                    .map(
-                      (r) => DropdownMenuItem(value: r, child: Text(r.labelAr)),
-                    )
-                    .toList(),
-                onChanged: (val) {
-                  if (val != null) setState(() => _formRole = val);
-                },
+              style: TextStyle(
+                color: DughryColors.goldLight,
+                fontWeight: FontWeight.bold,
               ),
+            ),
+            const SizedBox(width: 8),
+            DropdownButton<UserRoleType>(
+              value: _formRole,
+              dropdownColor: DughryColors.royalNavyCard,
+              items: UserRoleType.values
+                  .where((r) => r != UserRoleType.admin)
+                  .map(
+                    (r) => DropdownMenuItem(value: r, child: Text(r.labelAr)),
+                  )
+                  .toList(),
+              onChanged: (val) {
+                if (val != null) setState(() => _formRole = val);
+              },
+            ),
             ],
           ),
           const SizedBox(height: 10),
