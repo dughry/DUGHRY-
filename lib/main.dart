@@ -2046,7 +2046,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
   ],
     );
 }
-
+}
 class _GovernorateGpsSheet extends StatefulWidget {
   final VoidCallback onLocationChanged;
 
