@@ -1147,10 +1147,24 @@ class DughryAppStateStore {
     ),
     DughryCategoryItem(
       id: 'shipping',
-      titleAr: 'شحن ونقل',
+      titleAr: 'شحن وطلبات',
       icon: Icons.local_shipping_rounded,
       accentColor: Color(0xFF4338CA),
       groupType: 'توصيل',
+    ),
+    DughryCategoryItem(
+      id: 'home_services',
+      titleAr: 'خدمات منزلية',
+      icon: Icons.cleaning_services_rounded,
+      accentColor: Color(0xFF0F766E),
+      groupType: 'خدمات',
+    ),
+    DughryCategoryItem(
+      id: 'building',
+      titleAr: 'مواد وتشطيب',
+      icon: Icons.foundation_rounded,
+      accentColor: Color(0xFF92400E),
+      groupType: 'خدمات',
     ),
   ];
 
@@ -1245,24 +1259,6 @@ class DughryAppStateStore {
     return record;
   }
 }
-      titleAr: 'شحن وطلبات',
-      icon: Icons.local_shipping_rounded,
-      accentColor: Color(0xFF4338CA),
-      groupType: 'توصيل',
-    ),
-    DughryCategoryItem(
-      id: 'home_services',
-      titleAr: 'خدمات منزلية',
-      icon: Icons.cleaning_services_rounded,
-      accentColor: Color(0xFF0F766E),
-      groupType: 'خدمات',
-    ),
-    DughryCategoryItem(
-      id: 'building',
-      titleAr: 'مواد وتشطيب',
-      icon: Icons.foundation_rounded,
-      accentColor: Color(0xFF92400E),
-      groupType: 'خدمات',
     ),
   ];
 static const List<DughryCatalogProduct> sampleProducts = [
@@ -1941,7 +1937,7 @@ class _AccountAndAdminTabView extends StatefulWidget {
  const _AccountAndAdminTabView({
     required this.activeRole,
     required this.onRoleChanged,
-    required this.adminUnlocked,
+   required this.adminUnlocked,
     required this.adminPassCtrl,
     required this.onUnlockAdmin,
     required this.onRefresh,
@@ -1987,6 +1983,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
               selected: selected,
               onSelected: (_) {
                 widget.onRoleChanged(r);
+              },
                 if (r != UserRoleType.admin) {
                   setState(() => _formRole = r);
                 }
