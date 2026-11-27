@@ -889,7 +889,7 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            initialValue: _selectedGov,
+            value: _selectedGov,
             dropdownColor: DughryColors.royalNavyCard,
             decoration: const InputDecoration(
               labelText: 'المحافظة',
@@ -917,7 +917,7 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
           if (widget.role == UserRoleType.merchant) ...[
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              initialValue: _merchantCategory,
+              value: _merchantCategory,
               dropdownColor: DughryColors.royalNavyCard,
               decoration: const InputDecoration(
                 labelText: 'تصنيف النشاط التجاري',
@@ -2030,7 +2030,8 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
           ],
         ] else ...[
           DropdownButtonFormField<UserRoleType>(
-            initialValue: _formRole,
+            DropdownButtonFormField<UserRoleType>(
+            value: _formRole,
             dropdownColor: DughryColors.royalNavyCard,
             decoration: const InputDecoration(
               labelText: 'نوع الحساب المطلوب تسجيله',
