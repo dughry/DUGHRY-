@@ -1252,15 +1252,14 @@ class DughryAppStateStore {
       governorateAr: locationLabel,
       summaryText: 'طلب يحتوي على $count عنصر من دوجري',
       totalAmount: amount,
-      statusText: 'تم استلام الطلب بنجاح',
+     statusText: 'تم استلام الطلب بنجاح',
     );
     orders.insert(0, record);
     cartItems.clear();
     return record;
   }
 }
-    ),
-  ];
+
 static const List<DughryCatalogProduct> sampleProducts = [
     DughryCatalogProduct(
       id: 'PRD-1',
@@ -1958,7 +1957,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
         : widget.activeRole;
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     final isAdminMode = widget.activeRole == UserRoleType.admin;
 
@@ -1983,7 +1982,6 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
               selected: selected,
               onSelected: (_) {
                 widget.onRoleChanged(r);
-              },
                 if (r != UserRoleType.admin) {
                   setState(() => _formRole = r);
                 }
@@ -2023,7 +2021,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
             const SizedBox(width: 8),
             DropdownButton<UserRoleType>(
               value: _formRole,
-             dropdownColor: DughryColors.royalNavyCard,
+              dropdownColor: DughryColors.royalNavyCard,
               items: UserRoleType.values
                   .where((r) => r != UserRoleType.admin)
                   .map(
