@@ -1067,7 +1067,7 @@ class DughryOrderRecord {
   final DateTime createdAt;
   final String governorateAr;
   final String summaryText;
-  final double totalAmount;
+ final double totalAmount;
   final String statusText;
 
   const DughryOrderRecord({
@@ -1237,7 +1237,8 @@ class DughryAppStateStore {
             cartItems.removeAt(i);
           }
           return;
-    } catch (_) {}
+        }
+      } catch (_) {}
     }
   }
 
@@ -1257,7 +1258,6 @@ class DughryAppStateStore {
     cartItems.clear();
     return record;
   }
-}
 
   static const List<DughryCatalogProduct> sampleProducts = [
     DughryCatalogProduct(
@@ -1305,6 +1305,7 @@ class DughryAppStateStore {
       badge: 'متاح اليوم',
     ),
   ];
+}
 
 class RoleDashboardScreen extends StatefulWidget {
   final UserRoleType initialRole;
@@ -1319,7 +1320,6 @@ class RoleDashboardScreen extends StatefulWidget {
   @override
   State<RoleDashboardScreen> createState() => _RoleDashboardScreenState();
 }
-
 class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
   late UserRoleType _activeRole;
   int _bottomNavIndex = 0;
