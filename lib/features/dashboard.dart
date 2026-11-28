@@ -652,6 +652,14 @@ class _CartTabView extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   final created = DughryAppStateStore.checkoutCart(locationLabel);
+                  if (created == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('تعذر إتمام الطلب: راجع محتويات السلة والمحافظة المختارة.'),
+                      ),
+                    );
+                    return;
+                  }
                   onChanged();
                   onOrderPlaced();
                   ScaffoldMessenger.of(context).showSnackBar(
