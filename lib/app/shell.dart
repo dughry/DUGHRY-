@@ -65,135 +65,54 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _animController;
-  late final Animation<double> _fadeAnim;
-  int unreadNotificationsCount = 0;
+  late final AnimationController _introController;
+  Timer? _introTimer;
 
   @override
   void initState() {
     super.initState();
-    _animController = AnimationController(
+    _introController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 900),
+      duration: const Duration(milliseconds: 1100),
     )..forward();
-    _fadeAnim = CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeOutCubic,
-    );
+    _introTimer = Timer(const Duration(seconds: 5), _openCustomerHome);
   }
 
-  @override
-  void dispose() {
-    _animController.dispose();
-    super.dispose();
-  }
-
-  void _openNotificationsSheet() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: DughryColors.royalNavyMid,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+  void _openCustomerHome() {
+    if (!mounted) return;
+    _introTimer?.cancel();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => RoleDashboardScreen(
+          initialRole: UserRoleType.customer,
+          onLocationUpdated: () {},
+        ),
       ),
-      builder: (ctx) {
-        return Directionality(
-          textDirection: TextDirection.rtl,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.notifications_active_rounded,
-                      color: DughryColors.silverPrimary,
-                    ),
-                    const SizedBox(width: 10),
-                    const Expanded(
-                      child: Text(
-                        'إشعارات دوجري | DUGHRY',
-                        style: TextStyle(
-                          color: DughryColors.textLight,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        setState(() => unreadNotificationsCount = 0);
-                        Navigator.pop(ctx);
-                      },
-                      child: const Text(
-                        'تحديد الكل كمقروء',
-                        style: TextStyle(
-                          color: DughryColors.silverBright,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(color: DughryColors.borderSubtle),
-                const _NotificationTile(
-                  title: 'معاينة تجريبية للإشعارات',
-                  subtitle: 'سيتم عرض إشعارات الطلبات والتسجيلات بعد ربط خدمة الإشعارات.',
-                  badgeText: 'تجريبي',
-                  badgeColor: DughryColors.silverPrimary,
-                ),
-                const _NotificationTile(
-                  title: 'تنبيه توضيحي',
-                  subtitle: 'لا توجد حالياً إشعارات حقيقية متصلة بالخادم.',
-                  badgeText: 'تجريبي',
-                  badgeColor: DughryColors.crimsonRed,
-                ),
-                const SizedBox(height: 10),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 
-  void _openLocationSelectorSheet() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: DughryColors.royalNavyMid,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
-      ),
-      builder: (ctx) {
-        return _GovernorateGpsSheet(
-          onLocationChanged: () {
-            setState(() {});
-          },
-        );
-      },
-    );
-  }
-
-  void _onQuickRoleTap(UserRoleType role) {
-    Navigator.of(context).push(
+  void _openRole(UserRoleType role) {
+    if (!mounted) return;
+    _introTimer?.cancel();
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => RoleDashboardScreen(
           initialRole: role,
-          onLocationUpdated: () => setState(() {}),
+          onLocationUpdated: () {},
         ),
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final padding = MediaQuery.of(context).padding;
-    final usableHeight = size.height - padding.top - padding.bottom;
-    final landmarkHeight = (usableHeight * 0.25).clamp(150.0, 225.0).toDouble();
+  void dispose() {
+    _introTimer?.cancel();
+    _introController.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -203,211 +122,126 @@ class _SplashScreenState extends State<SplashScreen>
         ),
         child: SafeArea(
           child: FadeTransition(
-            opacity: _fadeAnim,
+            opacity: CurvedAnimation(
+              parent: _introController,
+              curve: Curves.easeOutCubic,
+            ),
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 18),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: _openLocationSelectorSheet,
-                          borderRadius: BorderRadius.circular(16),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: DughryColors.royalNavyCard,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: DughryColors.borderSubtle,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_on_rounded,
-                                  color: DughryColors.silverPrimary,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    '${DughryLocationStore.currentGovernorate.nameAr} - ${DughryLocationStore.selectedCenter}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: DughryColors.textLight,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.keyboard_arrow_down_rounded,
-                                  color: DughryColors.silverMuted,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          IconButton(
-                            onPressed: _openNotificationsSheet,
-                            style: IconButton.styleFrom(
-                              backgroundColor: DughryColors.royalNavyCard,
-                              side: const BorderSide(
-                                color: DughryColors.borderSubtle,
-                              ),
-                            ),
-                            icon: const Icon(
-                              Icons.notifications_rounded,
-                              color: DughryColors.silverBright,
-                            ),
-                          ),
-                          if (unreadNotificationsCount > 0)
-                            Positioned(
-                              top: -2,
-                              left: -2,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: const BoxDecoration(
-                                  color: DughryColors.crimsonRed,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Text(
-                                  '$unreadNotificationsCount',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  SizedBox(
-                    height: landmarkHeight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                        gradient: const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            DughryColors.royalNavySurface,
-                            DughryColors.royalNavyCard,
-                          ],
-                        ),
-                        border: Border.all(
-                          color: DughryColors.borderSubtle,
-                        ),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: DughryColors.silverGradient,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: const Text(
-                              'دوجري | DUGHRY',
-                              style: TextStyle(
-                                color: DughryColors.royalNavyDeep,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          const Text(
-                            'كل احتياجاتك في مكان واحد',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: DughryColors.textLight,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          const Text(
-                            'تجارة، خدمات فنية، أطباء وطلبات مباشرة في محافظتك',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: DughryColors.textSecondary,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 8),
                   const Text(
-                    'اختر دورك للدخول السريع',
+                    'دوجري | DUGHRY',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: DughryColors.silverBright,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 27,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.4,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 6),
+                  const Text(
+                    'كل احتياجاتك في مكان واحد',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: DughryColors.textSecondary,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const _EgyptLandmarkHero(),
+                  const SizedBox(height: 22),
+                  const Text(
+                    'مرحباً بك في دوجري',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: DughryColors.silverBright,
+                      fontSize: 19,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  const Text(
+                    'تسوق، خدمات، حجوزات وأكثر من مكان واحد',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: DughryColors.textSecondary,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
                   Wrap(
-                    spacing: 10,
+                    alignment: WrapAlignment.center,
+                    spacing: 9,
                     runSpacing: 10,
                     children: UserRoleType.values.map((role) {
                       return SizedBox(
-                        width: (math.max(260.0, size.width - 46) / 2).toDouble(),
-                        child: ElevatedButton.icon(
-                          onPressed: () => _onQuickRoleTap(role),
-                          style: ElevatedButton.styleFrom(
+                        width: (MediaQuery.of(context).size.width - 58) / 2,
+                        child: OutlinedButton.icon(
+                          onPressed: () => _openRole(role),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: DughryColors.silverBright,
                             backgroundColor: role == UserRoleType.admin
                                 ? DughryColors.crimsonDark
                                 : DughryColors.royalNavyCard,
-                            foregroundColor: DughryColors.textLight,
+                            side: const BorderSide(
+                              color: DughryColors.borderSubtle,
+                            ),
                             padding: const EdgeInsets.symmetric(
-                              vertical: 14,
-                              horizontal: 12,
+                              horizontal: 10,
+                              vertical: 13,
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              side: const BorderSide(
-                                color: DughryColors.borderSubtle,
-                              ),
+                              borderRadius: BorderRadius.circular(15),
                             ),
                           ),
                           icon: Icon(
                             role.icon,
                             color: DughryColors.silverPrimary,
+                            size: 19,
                           ),
                           label: Text(
                             role.labelAr,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              fontSize: 13,
                             ),
                           ),
                         ),
                       );
                     }).toList(),
+                  ),
+                  const SizedBox(height: 18),
+                  ElevatedButton(
+                    onPressed: _openCustomerHome,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: DughryColors.silverPrimary,
+                      foregroundColor: DughryColors.royalNavyDeep,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: const Text(
+                      'ابدأ التجربة',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'سيتم الانتقال تلقائياً إلى الصفحة الرئيسية',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: DughryColors.silverMuted,
+                      fontSize: 10,
+                    ),
                   ),
                 ],
               ),
@@ -417,4 +251,168 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
   }
+}
+
+class _EgyptLandmarkHero extends StatelessWidget {
+  const _EgyptLandmarkHero();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 218,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: DughryColors.borderSubtle),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x55000000),
+            blurRadius: 22,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          const CustomPaint(painter: _EgyptLandmarkPainter()),
+          Positioned(
+            right: 16,
+            top: 15,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
+              decoration: BoxDecoration(
+                color: const Color(0xAA07142B),
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: DughryColors.borderSubtle),
+              ),
+              child: const Text(
+                'صُنع ليجمع احتياجاتك',
+                style: TextStyle(
+                  color: DughryColors.silverBright,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+          const Positioned(
+            left: 16,
+            bottom: 13,
+            child: Text(
+              'EGYPT  •  DUGHRY',
+              style: TextStyle(
+                color: DughryColors.silverBright,
+                fontSize: 10,
+                letterSpacing: 1.4,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EgyptLandmarkPainter extends CustomPainter {
+  const _EgyptLandmarkPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final sky = Paint()
+      ..shader = const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0xFF173B69),
+          Color(0xFF315B7C),
+          Color(0xFFB58B68),
+        ],
+      ).createShader(Offset.zero & size);
+    canvas.drawRect(Offset.zero & size, sky);
+
+    final sunPaint = Paint()..color = const Color(0xFFE8D5B2).withValues(alpha: 0.78);
+    canvas.drawCircle(Offset(w * 0.19, h * 0.34), 23, sunPaint);
+
+    final farGround = Paint()..color = const Color(0xFF9C8066);
+    canvas.drawRect(
+      Rect.fromLTWH(0, h * 0.77, w, h * 0.23),
+      farGround,
+    );
+
+    final pyramidPaint = Paint()..color = const Color(0xFFD7C09B);
+    final pyramidShadow = Paint()..color = const Color(0xFF9E8465);
+    final leftPyramid = Path()
+      ..moveTo(w * 0.06, h * 0.79)
+      ..lineTo(w * 0.29, h * 0.27)
+      ..lineTo(w * 0.48, h * 0.79)
+      ..close();
+    canvas.drawPath(leftPyramid, pyramidPaint);
+    final leftShade = Path()
+      ..moveTo(w * 0.29, h * 0.27)
+      ..lineTo(w * 0.48, h * 0.79)
+      ..lineTo(w * 0.29, h * 0.79)
+      ..close();
+    canvas.drawPath(leftShade, pyramidShadow);
+
+    final rightPyramid = Path()
+      ..moveTo(w * 0.39, h * 0.79)
+      ..lineTo(w * 0.57, h * 0.42)
+      ..lineTo(w * 0.72, h * 0.79)
+      ..close();
+    canvas.drawPath(rightPyramid, pyramidPaint);
+    final rightShade = Path()
+      ..moveTo(w * 0.57, h * 0.42)
+      ..lineTo(w * 0.72, h * 0.79)
+      ..lineTo(w * 0.57, h * 0.79)
+      ..close();
+    canvas.drawPath(rightShade, pyramidShadow);
+
+    final towerPaint = Paint()
+      ..color = const Color(0xFF102B4A)
+      ..style = PaintingStyle.fill;
+    final tower = Path()
+      ..moveTo(w * 0.82, h * 0.79)
+      ..quadraticBezierTo(w * 0.845, h * 0.48, w * 0.86, h * 0.29)
+      ..lineTo(w * 0.89, h * 0.29)
+      ..quadraticBezierTo(w * 0.91, h * 0.48, w * 0.94, h * 0.79)
+      ..close();
+    canvas.drawPath(tower, towerPaint);
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: Offset(w * 0.875, h * 0.29),
+        width: w * 0.055,
+        height: 9,
+      ),
+      towerPaint,
+    );
+    final antenna = Paint()
+      ..color = const Color(0xFFE4D8C3)
+      ..strokeWidth = 2
+      ..strokeCap = StrokeCap.round;
+    canvas.drawLine(
+      Offset(w * 0.875, h * 0.25),
+      Offset(w * 0.875, h * 0.13),
+      antenna,
+    );
+    final lattice = Paint()
+      ..color = const Color(0xFF8EA5B8).withValues(alpha: 0.65)
+      ..strokeWidth = 1;
+    for (var i = 0; i < 5; i++) {
+      final y = h * (0.38 + i * 0.075);
+      canvas.drawLine(Offset(w * 0.84, y), Offset(w * 0.91, y), lattice);
+    }
+
+    final foreground = Paint()..color = const Color(0xFF07142B);
+    canvas.drawRect(
+      Rect.fromLTWH(0, h * 0.91, w, h * 0.09),
+      foreground,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _EgyptLandmarkPainter oldDelegate) => false;
 }
