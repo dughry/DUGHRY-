@@ -182,7 +182,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
       ),
     );
   }
-}class _HomeTabView extends StatelessWidget {
+}class _HomeTabView extends StatefulWidget {
   final GovernorateItem gov;
   final String? selectedCategoryId;
   final ValueChanged<String> onSelectCategory;
@@ -196,14 +196,23 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
   });
 
   @override
+  State<_HomeTabView> createState() => _HomeTabViewState();
+}
+
+class _HomeTabViewState extends State<_HomeTabView> {
+  String _searchQuery = '';
+
+  @override
   Widget build(BuildContext context) {
     final areaAvailable = DughryLocationStore.isCurrentAreaAvailable;
     final filteredProducts = !areaAvailable
         ? <DughryCatalogProduct>[]
         : DughryAppStateStore.sampleProducts.where((p) {
             final matchesArea = p.governorateAr == gov.nameAr;
-            final matchesCategory = selectedCategoryId == null || p.categoryId == selectedCategoryId;
-            return matchesArea && matchesCategory;
+            final matchesCategory = widget.widget.selectedCategoryId == null || p.categoryId == widget.selectedCategoryId;
+            final query = _searchQuery.trim().toLowerCase();
+            final matchesSearch = query.isEmpty || p.nameAr.toLowerCase().contains(query) || p.categoryTitleAr.toLowerCase().contains(query);
+            return matchesArea && matchesCategory && matchesSearch;
           }).toList();
 
     return ListView(
@@ -261,6 +270,22 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
             ),
           ],
         ),
+        const SizedBox(height: 14),
+        TextField(
+          textDirection: TextDirection.rtl,
+          onChanged: (value) => setState(() => _searchQuery = value),
+          decoration: InputDecoration(
+            hintText: 'ابحث عن منتج أو خدمة أو قسم...',
+            prefixIcon: const Icon(Icons.search_rounded, color: DughryColors.silverPrimary),
+            filled: true,
+            fillColor: DughryColors.royalNavyCard,
+            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: DughryColors.borderSubtle)),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: DughryColors.borderSubtle)),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: DughryColors.silverPrimary)),
+          ),
+          style: const TextStyle(color: DughryColors.textLight),
+        ),
         const SizedBox(height: 17),
         const _DughryAdsCarousel(),
         const SizedBox(height: 18),
@@ -302,57 +327,52 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
           ),
         ),
         const SizedBox(height: 10),
-        SizedBox(
-          height: 112,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: DughryAppStateStore.categories.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 10),
-            itemBuilder: (_, index) {
-              final cat = DughryAppStateStore.categories[index];
-              final isSelected = selectedCategoryId == cat.id;
-              return InkWell(
-                onTap: () => onSelectCategory(cat.id),
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  width: 104,
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? DughryColors.royalNavySurface
-                        : DughryColors.royalNavyCard,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: isSelected
-                          ? DughryColors.silverPrimary
-                          : DughryColors.borderSubtle,
-                    ),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: DughryAppStateStore.categories.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            childAspectRatio: 2.45,
+          ),
+          itemBuilder: (_, index) {
+            final cat = DughryAppStateStore.categories[index];
+            final isSelected = widget.selectedCategoryId == cat.id;
+            return InkWell(
+              onTap: () => widget.onSelectCategory(cat.id),
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                decoration: BoxDecoration(
+                  color: isSelected ? DughryColors.royalNavySurface : DughryColors.royalNavyCard,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: isSelected ? DughryColors.silverPrimary : DughryColors.borderSubtle,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AnimatedCategoryIcon(
-                        category: cat,
-                        size: 58,
-                        phase: index,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
+                ),
+                child: Row(
+                  children: [
+                    AnimatedCategoryIcon(category: cat, size: 42, phase: index),
+                    const SizedBox(width: 9),
+                    Expanded(
+                      child: Text(
                         cat.titleAr,
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: DughryColors.textLight,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 18),
         Row(
@@ -366,9 +386,9 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            if (selectedCategoryId != null)
+            if (widget.selectedCategoryId != null)
               TextButton(
-                onPressed: () => onSelectCategory(selectedCategoryId!),
+                onPressed: () => widget.onSelectCategory(widget.widget.selectedCategoryId!),
                 child: const Text(
                   'عرض الكل',
                   style: TextStyle(color: DughryColors.silverBright),
@@ -418,7 +438,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
               ),
               isThreeLine: true,
               trailing: ElevatedButton(
-                onPressed: () => onAddToCart(prod),
+                onPressed: () => widget.widget.onAddToCart(prod),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: DughryColors.silverPrimary,
                   foregroundColor: DughryColors.royalNavyDeep,
