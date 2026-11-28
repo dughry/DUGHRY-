@@ -114,41 +114,11 @@ class DughryLocationStore {
       lng: 31.2089,
     ),
     GovernorateItem(
-      id: 'minya',
-      nameAr: 'المنيا',
-      isAvailable: true,
-      availableCenters: ['مركز العدوة'],
-      comingSoonNote: 'مركز العدوة متاحة حالياً - باقي المراكز قريباً',
-      lat: 28.6095,
-      lng: 30.7950,
-    ),
-    GovernorateItem(
       id: 'alexandria',
       nameAr: 'الإسكندرية',
       isAvailable: false,
       lat: 31.2001,
       lng: 29.9187,
-    ),
-    GovernorateItem(
-      id: 'dakahlia',
-      nameAr: 'الدقهلية',
-      isAvailable: false,
-      lat: 31.0409,
-      lng: 31.3785,
-    ),
-    GovernorateItem(
-      id: 'sharqia',
-      nameAr: 'الشرقية',
-      isAvailable: false,
-      lat: 30.7327,
-      lng: 31.7195,
-    ),
-    GovernorateItem(
-      id: 'gharbia',
-      nameAr: 'الغربية',
-      isAvailable: false,
-      lat: 30.8754,
-      lng: 31.0335,
     ),
     GovernorateItem(
       id: 'qalyubia',
@@ -158,11 +128,132 @@ class DughryLocationStore {
       lng: 31.2168,
     ),
     GovernorateItem(
-      id: 'asyut',
+      id: 'sharqia',
+      nameAr: 'الشرقية',
+      isAvailable: false,
+      lat: 30.7327,
+      lng: 31.7195,
+    ),
+    GovernorateItem(
+      id: 'dakahlia',
+      nameAr: 'الدقهلية',
+      isAvailable: false,
+      lat: 31.0409,
+      lng: 31.3785,
+    ),
+    GovernorateItem(
+      id: 'gharbia',
+      nameAr: 'الغربية',
+      isAvailable: false,
+      lat: 30.8754,
+      lng: 31.0335,
+    ),
+    GovernorateItem(
+      id: 'monufia',
+      nameAr: 'المنوفية',
+      isAvailable: false,
+      lat: 30.5972,
+      lng: 30.9876,
+    ),
+    GovernorateItem(
+      id: 'beheira',
+      nameAr: 'البحيرة',
+      isAvailable: false,
+      lat: 30.8481,
+      lng: 30.3436,
+    ),
+    GovernorateItem(
+      id: 'kafr_el_sheikh',
+      nameAr: 'كفر الشيخ',
+      isAvailable: false,
+      lat: 31.1107,
+      lng: 30.94,
+    ),
+    GovernorateItem(
+      id: 'damietta',
+      nameAr: 'دمياط',
+      isAvailable: false,
+      lat: 31.4175,
+      lng: 31.8144,
+    ),
+    GovernorateItem(
+      id: 'port_said',
+      nameAr: 'بورسعيد',
+      isAvailable: false,
+      lat: 31.2653,
+      lng: 32.3019,
+    ),
+    GovernorateItem(
+      id: 'ismailia',
+      nameAr: 'الإسماعيلية',
+      isAvailable: false,
+      lat: 30.5965,
+      lng: 32.2715,
+    ),
+    GovernorateItem(
+      id: 'suez',
+      nameAr: 'السويس',
+      isAvailable: false,
+      lat: 29.9668,
+      lng: 32.5498,
+    ),
+    GovernorateItem(
+      id: 'north_sinai',
+      nameAr: 'شمال سيناء',
+      isAvailable: false,
+      lat: 30.5833,
+      lng: 33.0833,
+    ),
+    GovernorateItem(
+      id: 'south_sinai',
+      nameAr: 'جنوب سيناء',
+      isAvailable: false,
+      lat: 28.2417,
+      lng: 33.6222,
+    ),
+    GovernorateItem(
+      id: 'new_valley',
+      nameAr: 'الوادي الجديد',
+      isAvailable: false,
+      lat: 25.4479,
+      lng: 30.5464,
+    ),
+    GovernorateItem(
+      id: 'matrouh',
+      nameAr: 'مطروح',
+      isAvailable: false,
+      lat: 31.3543,
+      lng: 27.2373,
+    ),
+    GovernorateItem(
+      id: 'fayoum',
+      nameAr: 'الفيوم',
+      isAvailable: false,
+      lat: 29.3084,
+      lng: 30.8428,
+    ),
+    GovernorateItem(
+      id: 'beni_suef',
+      nameAr: 'بني سويف',
+      isAvailable: false,
+      lat: 29.0661,
+      lng: 31.0994,
+    ),
+    GovernorateItem(
+      id: 'minya',
+      nameAr: 'المنيا',
+      isAvailable: false,
+      availableCenters: ['مركز العدوة'],
+      comingSoonNote: 'مركز العدوة متاح حالياً - باقي مراكز المنيا قريباً',
+      lat: 28.1099,
+      lng: 30.7503,
+    ),
+    GovernorateItem(
+      id: 'assiut',
       nameAr: 'أسيوط',
       isAvailable: false,
-      lat: 27.1783,
-      lng: 31.1859,
+      lat: 27.1809,
+      lng: 31.1837,
     ),
     GovernorateItem(
       id: 'sohag',
@@ -171,11 +262,42 @@ class DughryLocationStore {
       lat: 26.5569,
       lng: 31.6948,
     ),
+    GovernorateItem(
+      id: 'qena',
+      nameAr: 'قنا',
+      isAvailable: false,
+      lat: 26.1551,
+      lng: 32.716,
+    ),
+    GovernorateItem(
+      id: 'luxor',
+      nameAr: 'الأقصر',
+      isAvailable: false,
+      lat: 25.6872,
+      lng: 32.6396,
+    ),
+    GovernorateItem(
+      id: 'aswan',
+      nameAr: 'أسوان',
+      isAvailable: false,
+      lat: 24.0889,
+      lng: 32.8998,
+    ),
+    GovernorateItem(
+      id: 'red_sea',
+      nameAr: 'البحر الأحمر',
+      isAvailable: false,
+      lat: 27.2579,
+      lng: 33.8116,
+    ),
   ];
 
-  static String selectedGovernorateId = 'minya';
-  static String selectedCenter = 'مركز العدوة';
-  static bool isGpsSynced = true;
+  static String selectedGovernorateId = 'cairo';
+  static String selectedCenter = 'مدينة نصر';
+  // اختيار المنطقة لا يعني أن GPS تم تشغيله أو التحقق منه.
+  static bool isGpsSynced = false;
+
+  static bool get isCurrentAreaAvailable => currentGovernorate.isAvailable || (currentGovernorate.id == 'minya' && selectedCenter == 'مركز العدوة');
 
   static GovernorateItem get currentGovernorate {
     return governorates.firstWhere(
@@ -370,7 +492,7 @@ class _SplashScreenState extends State<SplashScreen>
     final size = MediaQuery.of(context).size;
     final padding = MediaQuery.of(context).padding;
     final usableHeight = size.height - padding.top - padding.bottom;
-    final landmarkHeight = (usableHeight * 0.25).clamp(150.0, 225.0);
+    final landmarkHeight = (usableHeight * 0.25).clamp(150.0, 225.0).toDouble();
 
     return Scaffold(
       body: Container(
@@ -553,7 +675,7 @@ class _SplashScreenState extends State<SplashScreen>
                     runSpacing: 10,
                     children: UserRoleType.values.map((role) {
                       return SizedBox(
-                        width: (math.max(260.0, size.width - 46)) / 2,
+                        width: (math.max(260.0, size.width - 46) / 2).toDouble(),
                         child: ElevatedButton.icon(
                           onPressed: () => _onQuickRoleTap(role),
                           style: ElevatedButton.styleFrom(
@@ -833,8 +955,8 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
         backgroundColor: DughryColors.royalNavyCard,
         content: Text(
           isCustomer
-              ? 'تم تفعيل حساب العميل بنجاح'
-              : 'تم إرسال طلب التسجيل (${record.status.labelAr})',
+              ? 'تم إنشاء سجل حساب تجريبي على هذا الجهاز'
+              : 'تم حفظ طلب التسجيل تجريبياً على هذا الجهاز (${record.status.labelAr})',
           style: const TextStyle(color: DughryColors.textLight),
         ),
       ),
@@ -1224,7 +1346,7 @@ class DughryAppStateStore {
       governorateAr: locationLabel,
       summaryText: 'طلب يحتوي على $count عنصر من دوجري',
       totalAmount: amount,
-      statusText: 'تم استلام الطلب بنجاح',
+      statusText: 'محفوظ محلياً - بانتظار الربط بالخادم',
     );
     orders.insert(0, record);
     cartItems.clear();
@@ -1499,11 +1621,14 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredProducts = selectedCategoryId == null
-        ? DughryAppStateStore.sampleProducts
-        : DughryAppStateStore.sampleProducts
-            .where((p) => p.categoryId == selectedCategoryId)
-            .toList();
+    final areaAvailable = DughryLocationStore.isCurrentAreaAvailable;
+    final filteredProducts = !areaAvailable
+        ? <DughryCatalogProduct>[]
+        : DughryAppStateStore.sampleProducts.where((p) {
+            final matchesArea = p.governorateAr == gov.nameAr;
+            final matchesCategory = selectedCategoryId == null || p.categoryId == selectedCategoryId;
+            return matchesArea && matchesCategory;
+          }).toList();
 
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -1524,9 +1649,9 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  gov.isAvailable
+                  areaAvailable
                       ? 'متاح الآن في ${gov.nameAr} (${DughryLocationStore.selectedCenter})'
-                      : 'محافظة ${gov.nameAr} متاحة قريباً في دوجري',
+                      : 'الخدمات في ${gov.nameAr} - ${DughryLocationStore.selectedCenter} ستتاح قريباً',
                   style: const TextStyle(
                     color: DughryColors.textLight,
                     fontWeight: FontWeight.w600,
@@ -1617,6 +1742,17 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
           ],
         ),
         const SizedBox(height: 8),
+        if (filteredProducts.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 28),
+            child: Center(
+              child: Text(
+                areaAvailable ? 'لا توجد عروض مسجلة في هذا القسم حالياً.' : 'دوجري سيصل إلى منطقتك قريباً. يمكنك تصفح الأقسام الآن.',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: DughryColors.textSecondary),
+              ),
+            ),
+          ),
         ...filteredProducts.map(
           (prod) => Card(
             color: DughryColors.royalNavyCard,
@@ -1826,7 +1962,7 @@ class _CartTabView extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: DughryColors.royalNavySurface,
-                      content: Text('تم تأكيد الطلب ${created.orderId}'),
+                      content: Text('تم حفظ الطلب ${created.orderId} على الجهاز كتجربة؛ لم يُرسل إلى متجر أو خادم.'),
                     ),
                   );
                 },
