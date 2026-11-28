@@ -6,10 +6,6 @@ class DughryColors {
   static const Color royalNavyCard = Color(0xFF122E5C);
   static const Color royalNavySurface = Color(0xFF17386E);
 
-  static const Color goldPrimary = Color(0xFFD4AF37);
-  static const Color goldLight = Color(0xFFF3D778);
-  static const Color goldDark = Color(0xFF9E7B1B);
-
   static const Color silverPrimary = Color(0xFFD0D7E2);
   static const Color silverBright = Color(0xFFF4F7FB);
   static const Color silverMuted = Color(0xFF8C9BB0);
@@ -19,7 +15,7 @@ class DughryColors {
 
   static const Color textLight = Color(0xFFF8FAFC);
   static const Color textSecondary = Color(0xFFCBD5E1);
-  static const Color borderSubtle = Color(0x26D4AF37);
+  static const Color borderSubtle = Color(0x26D0D7E2);
   static const Color successGreen = Color(0xFF10B981);
 
   static const LinearGradient royalBackgroundGradient = LinearGradient(
@@ -33,13 +29,13 @@ class DughryColors {
     stops: [0.0, 0.55, 1.0],
   );
 
-  static const LinearGradient goldGradient = LinearGradient(
+  static const LinearGradient silverGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      goldLight,
-      goldPrimary,
-      goldDark,
+      silverBright,
+      silverPrimary,
+      silverMuted,
     ],
   );
 }
