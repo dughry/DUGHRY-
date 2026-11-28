@@ -2241,37 +2241,44 @@ class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
               ),
             ),
             const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
-              value: _tempGovId,
-              dropdownColor: DughryColors.royalNavyCard,
-              decoration: const InputDecoration(
-                labelText: 'المحافظة',
-                filled: true,
-                fillColor: DughryColors.royalNavyCard,
+            const Text(
+              'كل محافظات مصر',
+              style: TextStyle(color: DughryColors.textSecondary, fontSize: 12),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 230,
+              child: GridView.builder(
+                itemCount: DughryLocationStore.governorates.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 7,
+                  mainAxisSpacing: 7,
+                  childAspectRatio: 1.8,
+                ),
+                itemBuilder: (context, index) {
+                  final item = DughryLocationStore.governorates[index];
+                  final selected = item.id == _tempGovId;
+                  final label = item.id == 'minya'
+                      ? '${item.nameAr} (جزئي)'
+                      : item.isAvailable
+                          ? item.nameAr
+                          : '${item.nameAr} (قريباً)';
+                  return ChoiceChip(
+                    label: Text(label, textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 10)),
+                    selected: selected,
+                    onSelected: (_) {
+                      setState(() {
+                        _tempGovId = item.id;
+                        _tempCenter = item.availableCenters.isNotEmpty
+                            ? item.availableCenters.first
+                            : 'قريباً';
+                      });
+                    },
+                  );
+                },
               ),
-              items: DughryLocationStore.governorates
-                  .map(
-                    (g) => DropdownMenuItem(
-                      value: g.id,
-                      child: Text(
-                        g.isAvailable ? g.nameAr : '${g.nameAr} (قريباً)',
-                      ),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (val) {
-                if (val == null) return;
-                final picked = DughryLocationStore.governorates.firstWhere(
-                  (g) => g.id == val,
-                  orElse: () => gov,
-                );
-                setState(() {
-                  _tempGovId = picked.id;
-                  _tempCenter = picked.availableCenters.isNotEmpty
-                      ? picked.availableCenters.first
-                      : 'المركز الرئيسي';
-                });
-              },
             ),
             const SizedBox(height: 12),
             if (gov.availableCenters.isNotEmpty)
@@ -2302,7 +2309,7 @@ class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
               onPressed: () {
                 DughryLocationStore.selectedGovernorateId = _tempGovId;
                 DughryLocationStore.selectedCenter = _tempCenter;
-                DughryLocationStore.isGpsSynced = true;
+                DughryLocationStore.isGpsSynced = false;
                 widget.onLocationChanged();
                 Navigator.pop(context);
               },
