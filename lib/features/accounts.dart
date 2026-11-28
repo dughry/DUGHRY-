@@ -257,7 +257,7 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: _selectedGov,
+            initialValue: _selectedGov,
             dropdownColor: DughryColors.royalNavyCard,
             decoration: const InputDecoration(
               labelText: 'المحافظة',
