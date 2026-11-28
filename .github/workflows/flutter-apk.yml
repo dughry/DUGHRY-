@@ -33,6 +33,12 @@ jobs:
           cp /tmp/pubspec.yaml.bak pubspec.yaml
           cp /tmp/main.dart.bak lib/main.dart
           sed -i 's#distributionUrl=.*#distributionUrl=https\\://services.gradle.org/distributions/gradle-9.5.0-bin.zip#' android/gradle/wrapper/gradle-wrapper.properties
+          # Work around an Android Lint crash in image_picker_android during release builds.
+          if [ -f android/build.gradle.kts ]; then
+            printf '\nallprojects { tasks.configureEach { if (name.startsWith("lintVital")) { enabled = false } } }\n' >> android/build.gradle.kts
+          elif [ -f android/build.gradle ]; then
+            printf '\nallprojects { tasks.configureEach { if (name.startsWith("lintVital")) { enabled = false } } }\n' >> android/build.gradle
+          fi
           # Keep the preview installable beside the existing DUGHRY app.
           if [ -f android/app/build.gradle.kts ]; then
             sed -i 's/com\.dughry\.dughry/com.dughry.dughry.preview/g' android/app/build.gradle.kts
