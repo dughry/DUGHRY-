@@ -32,7 +32,7 @@ jobs:
           flutter create --org com.dughry --project-name dughry --platforms=android .
           cp /tmp/pubspec.yaml.bak pubspec.yaml
           cp /tmp/main.dart.bak lib/main.dart
-          sed -i 's/gradle-[0-9.]*-[a-z]*.zip/gradle-8.9-all.zip/' android/gradle/wrapper/gradle-wrapper.properties
+          sed -i 's#distributionUrl=.*#distributionUrl=https\\://services.gradle.org/distributions/gradle-9.5.0-bin.zip#' android/gradle/wrapper/gradle-wrapper.properties
           # Keep the preview installable beside the existing DUGHRY app.
           if [ -f android/app/build.gradle.kts ]; then
             sed -i 's/com\.dughry\.dughry/com.dughry.dughry.preview/g' android/app/build.gradle.kts
