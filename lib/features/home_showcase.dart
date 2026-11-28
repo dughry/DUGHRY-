@@ -31,6 +31,11 @@ class _DughryHomeShowcaseState extends State<_DughryHomeShowcase> {
   Widget build(BuildContext context) {
     final areaAvailable = DughryLocationStore.isCurrentAreaAvailable;
     final normalizedQuery = _query.trim().toLowerCase();
+    final visibleCategories = DughryAppStateStore.categories.where((category) {
+      return normalizedQuery.isEmpty ||
+          category.titleAr.toLowerCase().contains(normalizedQuery) ||
+          category.groupType.toLowerCase().contains(normalizedQuery);
+    }).toList();
     final filteredProducts = !areaAvailable
         ? <DughryCatalogProduct>[]
         : DughryAppStateStore.sampleProducts.where((product) {
@@ -138,7 +143,7 @@ class _DughryHomeShowcaseState extends State<_DughryHomeShowcase> {
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: DughryAppStateStore.categories.length,
+          itemCount: visibleCategories.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 12,
@@ -146,7 +151,7 @@ class _DughryHomeShowcaseState extends State<_DughryHomeShowcase> {
             childAspectRatio: 1.22,
           ),
           itemBuilder: (context, index) {
-            final category = DughryAppStateStore.categories[index];
+            final category = visibleCategories[index];
             final selected = widget.selectedCategoryId == category.id;
             return _DughryAnimatedCategoryTile(
               category: category,
