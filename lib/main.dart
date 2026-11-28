@@ -4,6 +4,8 @@ import 'dart:math' as math;
 // ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// ignore: deprecated_member_use
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 part 'core/theme.dart';
 part 'core/location.dart';
