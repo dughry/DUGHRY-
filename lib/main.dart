@@ -1,5 +1,6 @@
 library dughry;
 
+import 'dart:async';
 import 'dart:math' as math;
 // ignore: deprecated_member_use
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ part 'app/shell.dart';
 part 'features/accounts.dart';
 part 'features/catalog.dart';
 part 'features/dashboard.dart';
+part 'features/home_showcase.dart';
 part 'features/location_picker.dart';
 
 void main() {
