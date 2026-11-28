@@ -1,8 +1,11 @@
 library dughry;
 
+import 'dart:async';
+import 'dart:io';
 import 'dart:math' as math;
 // ignore: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 // ignore: deprecated_member_use
 import 'package:flutter_localizations/flutter_localizations.dart';
