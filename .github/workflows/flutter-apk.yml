@@ -2,7 +2,7 @@ name: Build DUGHRY Flutter APK
 
 on:
   push:
-    branches: [ "main", "prototype-wow-preview" ]
+    branches: [ "main", "prototype-wow-preview", "rebuild-original-all-features-no-intro" ]
   workflow_dispatch:
 
 jobs:
