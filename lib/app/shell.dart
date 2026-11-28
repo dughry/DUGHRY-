@@ -26,7 +26,7 @@ class DughryApp extends StatelessWidget {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: DughryColors.royalNavyDeep,
         colorScheme: const ColorScheme.dark(
-          primary: DughryColors.goldPrimary,
+          primary: DughryColors.silverPrimary,
           secondary: DughryColors.silverPrimary,
           error: DughryColors.crimsonRed,
           surface: DughryColors.royalNavyMid,
@@ -108,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen>
                   children: [
                     const Icon(
                       Icons.notifications_active_rounded,
-                      color: DughryColors.goldPrimary,
+                      color: DughryColors.silverPrimary,
                     ),
                     const SizedBox(width: 10),
                     const Expanded(
@@ -129,7 +129,7 @@ class _SplashScreenState extends State<SplashScreen>
                       child: const Text(
                         'تحديد الكل كمقروء',
                         style: TextStyle(
-                          color: DughryColors.goldLight,
+                          color: DughryColors.silverBright,
                           fontSize: 12,
                         ),
                       ),
@@ -141,7 +141,7 @@ class _SplashScreenState extends State<SplashScreen>
                   title: 'معاينة تجريبية للإشعارات',
                   subtitle: 'سيتم عرض إشعارات الطلبات والتسجيلات بعد ربط خدمة الإشعارات.',
                   badgeText: 'تجريبي',
-                  badgeColor: DughryColors.goldPrimary,
+                  badgeColor: DughryColors.silverPrimary,
                 ),
                 const _NotificationTile(
                   title: 'تنبيه توضيحي',
@@ -231,7 +231,7 @@ class _SplashScreenState extends State<SplashScreen>
                               children: [
                                 const Icon(
                                   Icons.location_on_rounded,
-                                  color: DughryColors.goldPrimary,
+                                  color: DughryColors.silverPrimary,
                                   size: 20,
                                 ),
                                 const SizedBox(width: 8),
@@ -270,7 +270,7 @@ class _SplashScreenState extends State<SplashScreen>
                             ),
                             icon: const Icon(
                               Icons.notifications_rounded,
-                              color: DughryColors.goldLight,
+                              color: DughryColors.silverBright,
                             ),
                           ),
                           if (unreadNotificationsCount > 0)
@@ -325,7 +325,7 @@ class _SplashScreenState extends State<SplashScreen>
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              gradient: DughryColors.goldGradient,
+                              gradient: DughryColors.silverGradient,
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: const Text(
@@ -364,7 +364,7 @@ class _SplashScreenState extends State<SplashScreen>
                   const Text(
                     'اختر دورك للدخول السريع',
                     style: TextStyle(
-                      color: DughryColors.goldLight,
+                      color: DughryColors.silverBright,
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
@@ -396,7 +396,7 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                           icon: Icon(
                             role.icon,
-                            color: DughryColors.goldPrimary,
+                            color: DughryColors.silverPrimary,
                           ),
                           label: Text(
                             role.labelAr,
