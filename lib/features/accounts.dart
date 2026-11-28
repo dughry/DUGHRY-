@@ -21,6 +21,10 @@ class RegistrationRequestRecord {
   final int gracePeriodDays;
   final RegistrationStatus status;
   final DateTime createdAt;
+  final String? profileImagePath;
+  final bool acceptedContract;
+  final String? contractVersion;
+  final DateTime? acceptedAt;
 
   RegistrationRequestRecord({
     required this.id,
@@ -34,6 +38,10 @@ class RegistrationRequestRecord {
     this.gracePeriodDays = 0,
     required this.status,
     DateTime? createdAt,
+    this.profileImagePath,
+    this.acceptedContract = false,
+    this.contractVersion,
+    this.acceptedAt,
   }) : createdAt = createdAt ?? DateTime.now();
 }
 
@@ -70,6 +78,10 @@ class DughryPortalStore {
         gracePeriodDays: old.gracePeriodDays,
         status: newStatus,
         createdAt: old.createdAt,
+        profileImagePath: old.profileImagePath,
+        acceptedContract: old.acceptedContract,
+        contractVersion: old.contractVersion,
+        acceptedAt: old.acceptedAt,
       );
     }
   }
@@ -102,6 +114,9 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
   String _merchantCategory = 'مواد غذائية وسوبر ماركت';
   int _graceDays = 15;
   int _experienceYears = 3;
+  File? _profileImage;
+  bool _acceptedContract = false;
+  final ImagePicker _imagePicker = ImagePicker();
 
   final List<String> _merchantCategories = [
     'مواد غذائية وسوبر ماركت',
@@ -149,10 +164,37 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
     super.dispose();
   }
 
+  Future<void> _pickProfileImage() async {
+    try {
+      final picked = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 82,
+        maxWidth: 1200,
+        maxHeight: 1200,
+      );
+      if (picked != null && mounted) {
+        setState(() => _profileImage = File(picked.path));
+      }
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('تعذر فتح الاستوديو. حاول مرة أخرى.')),
+      );
+    }
+  }
+
   void _submitForm() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     final isCustomer = widget.role == UserRoleType.customer;
+    if (!isCustomer && !_acceptedContract) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('يجب قراءة اتفاقية دوجري والموافقة عليها أولاً.'),
+        ),
+      );
+      return;
+    }
     final primaryDetail = switch (widget.role) {
       UserRoleType.merchant => _merchantCategory,
       UserRoleType.doctor => _activityOrSpecCtrl.text.trim().isEmpty
@@ -191,6 +233,10 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
       status: isCustomer
           ? RegistrationStatus.active
           : RegistrationStatus.pendingAdmin,
+      profileImagePath: _profileImage?.path,
+      acceptedContract: !isCustomer && _acceptedContract,
+      contractVersion: isCustomer ? null : 'DEMO-1.0',
+      acceptedAt: isCustomer ? null : DateTime.now(),
     );
 
     DughryPortalStore.addRequest(record);
@@ -255,6 +301,74 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
             validator: (v) =>
                 (v == null || v.trim().length < 8) ? 'رقم هاتف غير صحيح' : null,
           ),
+          if (widget.role != UserRoleType.customer &&
+              widget.role != UserRoleType.admin) ...[
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: DughryColors.royalNavyCard,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: DughryColors.borderSubtle),
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 29,
+                    backgroundColor: DughryColors.royalNavySurface,
+                    backgroundImage: _profileImage == null
+                        ? null
+                        : FileImage(_profileImage!),
+                    child: _profileImage == null
+                        ? const Icon(
+                            Icons.person_rounded,
+                            color: DughryColors.silverBright,
+                            size: 28,
+                          )
+                        : null,
+                  ),
+                  const SizedBox(width: 11),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'الصورة الشخصية أو شعار النشاط',
+                          style: TextStyle(
+                            color: DughryColors.textLight,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(height: 3),
+                        const Text(
+                          'اختياري - يمكنك إضافتها أو تخطيها',
+                          style: TextStyle(
+                            color: DughryColors.textSecondary,
+                            fontSize: 10,
+                          ),
+                        ),
+                        TextButton.icon(
+                          onPressed: _pickProfileImage,
+                          icon: const Icon(Icons.photo_library_outlined, size: 17),
+                          label: const Text('اختيار من الاستوديو'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (_profileImage != null)
+                    IconButton(
+                      tooltip: 'حذف الصورة',
+                      onPressed: () => setState(() => _profileImage = null),
+                      icon: const Icon(
+                        Icons.delete_outline_rounded,
+                        color: DughryColors.crimsonRed,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
             initialValue: _selectedGov,
@@ -360,6 +474,58 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
                 ),
                 Text('$_experienceYears سنة'),
               ],
+            ),
+          ],
+          if (widget.role != UserRoleType.customer &&
+              widget.role != UserRoleType.admin) ...[
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(13),
+              decoration: BoxDecoration(
+                color: DughryColors.royalNavyCard,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: DughryColors.silverPrimary.withValues(alpha: 0.35)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'اتفاقية مقدم الخدمة - إصدار تجريبي 1.0',
+                    style: TextStyle(
+                      color: DughryColors.silverBright,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 7),
+                  const Text(
+                    'التسجيل في دوجري مجاني حالياً، والعمولة الحالية 0%. أي رسوم أو نسب مستقبلية يجب توضيحها في اتفاقية جديدة والحصول على موافقتك قبل تطبيقها.',
+                    style: TextStyle(
+                      color: DughryColors.textSecondary,
+                      fontSize: 11,
+                      height: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 7),
+                  CheckboxListTile(
+                    value: _acceptedContract,
+                    onChanged: (value) => setState(
+                      () => _acceptedContract = value ?? false,
+                    ),
+                    contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    activeColor: DughryColors.silverPrimary,
+                    checkColor: DughryColors.royalNavyDeep,
+                    title: const Text(
+                      'قرأت الشروط وأوافق على اتفاقية دوجري',
+                      style: TextStyle(
+                        color: DughryColors.textLight,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
           const SizedBox(height: 16),
