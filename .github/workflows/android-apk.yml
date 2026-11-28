@@ -1,4 +1,5 @@
 name: Build DUGHRY Android APK
+# First staged home-screen batch: validate the current feature branch.
 
 on:
   workflow_dispatch:
