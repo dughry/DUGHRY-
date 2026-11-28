@@ -18,125 +18,6 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
   late UserRoleType _activeRole;
   int _bottomNavIndex = 0;
   String? _selectedCategoryFilterId;
-
-  @override
-  void initState() {
-    super.initState();
-    _activeRole = widget.initialRole;
-  }
-
-  Widget _buildCurrentTabBody(GovernorateItem gov) {
-    switch (_bottomNavIndex) {
-      case 0:
-        return _HomeTabView(
-          gov: gov,
-          selectedCategoryId: _selectedCategoryFilterId,
-          onSelectCategory: (catId) {
-            setState(() {
-              _selectedCategoryFilterId =
-                  (_selectedCategoryFilterId == catId) ? null : catId;
-            });
-          },
-          onAddToCart: (prod) {
-            DughryAppStateStore.addToCart(prod);
-            setState(() {});
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: DughryColors.royalNavyCard,
-                content: Text(
-                  'تمت إضافة ${prod.nameAr} إلى السلة',
-                  style: const TextStyle(color: DughryColors.textLight),
-                ),
-              ),
-            );
-          },
-        );
-      case 1:
-        return _CategoriesTabView(
-          selectedCategoryId: _selectedCategoryFilterId,
-          onPickCategory: (catId) {
-            setState(() {
-              _selectedCategoryFilterId = catId;
-              _bottomNavIndex = 0;
-            });
-          },
-        );
-      case 2:
-        return _CartTabView(
-          locationLabel:
-              '${gov.nameAr} - ${DughryLocationStore.selectedCenter}',
-          onChanged: () => setState(() {}),
-          onOrderPlaced: () => setState(() => _bottomNavIndex = 3),
-        );
-      case 3:
-        return const _OrdersTabView();
-      case 4:
-      default:
-        return _AccountAndAdminTabView(
-          activeRole: _activeRole,
-          onRoleChanged: (newRole) => setState(() => _activeRole = newRole),
-          onRefresh: () => setState(() {}),
-        );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final gov = DughryLocationStore.currentGovernorate;
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: DughryColors.royalNavyDeep,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: const Icon(
-            Icons.arrow_forward_rounded,
-            color: DughryColors.goldLight,
-          ),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'دوجري | ${_activeRole.labelAr}',
-              style: const TextStyle(
-                color: DughryColors.textLight,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              '${gov.nameAr} - ${DughryLocationStore.selectedCenter}',
-              style: const TextStyle(
-                color: DughryColors.goldLight,
-                fontSize: 12,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-part of dughry;
-
-class RoleDashboardScreen extends StatefulWidget {
-  final UserRoleType initialRole;
-  final VoidCallback? onLocationUpdated;
-
-  const RoleDashboardScreen({
-    super.key,
-    required this.initialRole,
-    required this.onLocationUpdated,
-  });
-
-  @override
-  State<RoleDashboardScreen> createState() => _RoleDashboardScreenState();
-}
-
-class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
-  late UserRoleType _activeRole;
-  int _bottomNavIndex = 0;
-  String? _selectedCategoryFilterId;
-
   @override
   void initState() {
     super.initState();
@@ -804,7 +685,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
           ),
         ] else ...[
           DropdownButtonFormField<UserRoleType>(
-            initialValue: _formRole,
+            value: _formRole,
             dropdownColor: DughryColors.royalNavyCard,
             decoration: const InputDecoration(
               labelText: 'نوع الحساب المطلوب تسجيله',
