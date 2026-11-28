@@ -685,7 +685,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
           ),
         ] else ...[
           DropdownButtonFormField<UserRoleType>(
-            value: _formRole,
+            initialValue: _formRole,
             dropdownColor: DughryColors.royalNavyCard,
             decoration: const InputDecoration(
               labelText: 'نوع الحساب المطلوب تسجيله',
