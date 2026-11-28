@@ -18,20 +18,11 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
   late UserRoleType _activeRole;
   int _bottomNavIndex = 0;
   String? _selectedCategoryFilterId;
-  bool _adminUnlocked = false;
-  final _adminPassCtrl = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _activeRole = widget.initialRole;
-    _adminUnlocked = false;
-  }
-
-  @override
-  void dispose() {
-    _adminPassCtrl.dispose();
-    super.dispose();
   }
 
   Widget _buildCurrentTabBody(GovernorateItem gov) {
@@ -84,20 +75,124 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
         return _AccountAndAdminTabView(
           activeRole: _activeRole,
           onRoleChanged: (newRole) => setState(() => _activeRole = newRole),
-          adminUnlocked: _adminUnlocked,
-          adminPassCtrl: _adminPassCtrl,
-          onUnlockAdmin: () {
-            if (DughryPortalStore.verifyAdminPasscode(_adminPassCtrl.text)) {
-              setState(() => _adminUnlocked = true);
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  backgroundColor: DughryColors.crimsonDark,
-                  content: Text('دخول الإدارة غير مفعّل بعد؛ يلزم ربط نظام دخول آمن.'),
-                ),
-              );
-            }
+          onRefresh: () => setState(() {}),
+        );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final gov = DughryLocationStore.currentGovernorate;
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: DughryColors.royalNavyDeep,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(
+            Icons.arrow_forward_rounded,
+            color: DughryColors.goldLight,
+          ),
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'دوجري | ${_activeRole.labelAr}',
+              style: const TextStyle(
+                color: DughryColors.textLight,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              '${gov.nameAr} - ${DughryLocationStore.selectedCenter}',
+              style: const TextStyle(
+                color: DughryColors.goldLight,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+part of dughry;
+
+class RoleDashboardScreen extends StatefulWidget {
+  final UserRoleType initialRole;
+  final VoidCallback? onLocationUpdated;
+
+  const RoleDashboardScreen({
+    super.key,
+    required this.initialRole,
+    required this.onLocationUpdated,
+  });
+
+  @override
+  State<RoleDashboardScreen> createState() => _RoleDashboardScreenState();
+}
+
+class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
+  late UserRoleType _activeRole;
+  int _bottomNavIndex = 0;
+  String? _selectedCategoryFilterId;
+
+  @override
+  void initState() {
+    super.initState();
+    _activeRole = widget.initialRole;
+  }
+
+  Widget _buildCurrentTabBody(GovernorateItem gov) {
+    switch (_bottomNavIndex) {
+      case 0:
+        return _HomeTabView(
+          gov: gov,
+          selectedCategoryId: _selectedCategoryFilterId,
+          onSelectCategory: (catId) {
+            setState(() {
+              _selectedCategoryFilterId =
+                  (_selectedCategoryFilterId == catId) ? null : catId;
+            });
           },
+          onAddToCart: (prod) {
+            DughryAppStateStore.addToCart(prod);
+            setState(() {});
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: DughryColors.royalNavyCard,
+                content: Text(
+                  'تمت إضافة ${prod.nameAr} إلى السلة',
+                  style: const TextStyle(color: DughryColors.textLight),
+                ),
+              ),
+            );
+          },
+        );
+      case 1:
+        return _CategoriesTabView(
+          selectedCategoryId: _selectedCategoryFilterId,
+          onPickCategory: (catId) {
+            setState(() {
+              _selectedCategoryFilterId = catId;
+              _bottomNavIndex = 0;
+            });
+          },
+        );
+      case 2:
+        return _CartTabView(
+          locationLabel:
+              '${gov.nameAr} - ${DughryLocationStore.selectedCenter}',
+          onChanged: () => setState(() {}),
+          onOrderPlaced: () => setState(() => _bottomNavIndex = 3),
+        );
+      case 3:
+        return const _OrdersTabView();
+      case 4:
+      default:
+        return _AccountAndAdminTabView(
+          activeRole: _activeRole,
+          onRoleChanged: (newRole) => setState(() => _activeRole = newRole),
           onRefresh: () => setState(() {}),
         );
     }
@@ -140,6 +235,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
         ),
         actions: [
           IconButton(
+            tooltip: 'تغيير المحافظة والمنطقة',
             onPressed: () {
               showModalBottomSheet(
                 context: context,
@@ -157,7 +253,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
               );
             },
             icon: const Icon(
-              Icons.my_location_rounded,
+              Icons.location_on_rounded,
               color: DughryColors.goldPrimary,
             ),
           ),
@@ -629,17 +725,11 @@ class _OrdersTabView extends StatelessWidget {
 class _AccountAndAdminTabView extends StatefulWidget {
   final UserRoleType activeRole;
   final ValueChanged<UserRoleType> onRoleChanged;
-  final bool adminUnlocked;
-  final TextEditingController adminPassCtrl;
-  final VoidCallback onUnlockAdmin;
   final VoidCallback onRefresh;
 
   const _AccountAndAdminTabView({
     required this.activeRole,
     required this.onRoleChanged,
-    required this.adminUnlocked,
-    required this.adminPassCtrl,
-    required this.onUnlockAdmin,
     required this.onRefresh,
   });
 
@@ -692,26 +782,19 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
         ),
         const SizedBox(height: 18),
         if (isAdminMode) ...[
-          if (!widget.adminUnlocked) ...[
-            TextField(
-              controller: widget.adminPassCtrl,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'رمز الدخول الإداري',
-                filled: true,
-                fillColor: DughryColors.royalNavyCard,
-              ),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: DughryColors.royalNavyCard,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: DughryColors.borderSubtle),
             ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: widget.onUnlockAdmin,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: DughryColors.goldPrimary,
-                foregroundColor: DughryColors.royalNavyDeep,
-              ),
-              child: const Text('دخول لوحة الإدارة'),
+            child: const Text(
+              'لوحة الإدارة محجوبة في هذه النسخة التجريبية. سيتم تفعيلها بعد ربط تسجيل دخول آمن وخادم لحفظ طلبات التجار والفنيين والأطباء.',
+              style: TextStyle(color: DughryColors.textSecondary),
             ),
-          ] else ...[
+          ),
+        ] else ...[
             const Text(
               'طلبات التسجيل والمراجعة الإدارية',
               style: TextStyle(
