@@ -110,6 +110,15 @@ class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
+                if (DughryAppStateStore.cartItems.isNotEmpty &&
+                    _tempGovId != DughryLocationStore.selectedGovernorateId) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('أتمم الطلب أو أفرغ السلة قبل تغيير المحافظة.'),
+                    ),
+                  );
+                  return;
+                }
                 DughryLocationStore.selectedGovernorateId = _tempGovId;
                 DughryLocationStore.selectedCenter = _tempCenter;
                 DughryLocationStore.isGpsSynced = false;
