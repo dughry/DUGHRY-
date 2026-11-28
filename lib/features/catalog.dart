@@ -308,7 +308,7 @@ class DughryAppStateStore {
       governorateAr: 'القاهرة',
       price: 1290.0,
       unitLabel: 'لكل قطعة',
-      icon: Icons.electric_fan_rounded,
+      icon: Icons.toys_rounded,
       badge: 'بيانات تجريبية',
     ),
     DughryCatalogProduct(
