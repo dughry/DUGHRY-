@@ -227,7 +227,7 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
           Text(
             'تسجيل حساب ${widget.role.labelAr}',
             style: const TextStyle(
-              color: DughryColors.goldLight,
+              color: DughryColors.silverBright,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -366,7 +366,7 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
           ElevatedButton(
             onPressed: _submitForm,
             style: ElevatedButton.styleFrom(
-              backgroundColor: DughryColors.goldPrimary,
+              backgroundColor: DughryColors.silverPrimary,
               foregroundColor: DughryColors.royalNavyDeep,
               padding: const EdgeInsets.symmetric(vertical: 14),
             ),
