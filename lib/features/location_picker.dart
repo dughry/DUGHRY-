@@ -38,7 +38,7 @@ class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
             const Text(
              'اختيار المحافظة والمركز',
               style: TextStyle(
-                color: DughryColors.goldLight,
+                color: DughryColors.silverBright,
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),
@@ -126,7 +126,7 @@ class _GovernorateGpsSheetState extends State<_GovernorateGpsSheet> {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: DughryColors.goldPrimary,
+                backgroundColor: DughryColors.silverPrimary,
                 foregroundColor: DughryColors.royalNavyDeep,
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
