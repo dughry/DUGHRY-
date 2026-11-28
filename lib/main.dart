@@ -755,50 +755,13 @@ class RegistrationRequestRecord {
 }
 
 class DughryPortalStore {
-  static final List<RegistrationRequestRecord> records = [
-    RegistrationRequestRecord(
-      id: 'REQ-101',
-      role: UserRoleType.merchant,
-      fullName: 'محمود عبد الله',
-      phone: '01012345678',
-      governorateAr: 'المنيا',
-      addressOrCenter: 'مركز العدوة - شارع الجمهورية',
-      primaryDetail: 'مستلزمات منزلية وأجهزة',
-      secondaryDetail: 'قسم المستلزمات المنزلية',
-      gracePeriodDays: 30,
-      status: RegistrationStatus.pendingAdmin,
-    ),
-    RegistrationRequestRecord(
-      id: 'REQ-102',
-      role: UserRoleType.doctor,
-      fullName: 'د. سارة منصور',
-      phone: '01122334455',
-      governorateAr: 'المنيا',
-      addressOrCenter: 'مركز العدوة - عيادة السلام الطبية',
-      primaryDetail: 'باطنة وجهاز هضمي',
-      secondaryDetail: 'قيد النقابة: 184920',
-      gracePeriodDays: 0,
-      status: RegistrationStatus.pendingAdmin,
-    ),
-    RegistrationRequestRecord(
-      id: 'REQ-103',
-      role: UserRoleType.technician,
-      fullName: 'كريم حسن علي',
-      phone: '01298765432',
-      governorateAr: 'القاهرة',
-      addressOrCenter: 'مدينة نصر - الحي السابع',
-      primaryDetail: 'صيانة تكييف وتبريد',
-      secondaryDetail: 'خبرة 7 سنوات - نطاق مدينة نصر ومصر الجديدة',
-      gracePeriodDays: 0,
-      status: RegistrationStatus.active,
-    ),
-  ];
+  static final List<RegistrationRequestRecord> records = [];
 
   static RegistrationRequestRecord? latestCustomerSession;
-  static final List<String> adminPasscodes = ['1234', 'dughry2026'];
+  // لا توجد كلمات مرور تجريبية مضمنة؛ يجب ربط الإدارة بمصادقة خادمية آمنة.
 
   static bool verifyAdminPasscode(String input) {
-    return adminPasscodes.contains(input.trim());
+    return false; // لوحة الإدارة مقفولة حتى تنفيذ المصادقة الآمنة على الخادم.
   }
 
   static void addRequest(RegistrationRequestRecord record) {
@@ -1480,7 +1443,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   backgroundColor: DughryColors.crimsonDark,
-                  content: Text('رمز الدخول الإداري غير صحيح'),
+                  content: Text('دخول الإدارة غير مفعّل بعد؛ يلزم ربط نظام دخول آمن.'),
                 ),
               );
             }
