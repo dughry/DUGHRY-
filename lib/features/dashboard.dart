@@ -208,8 +208,8 @@ class _HomeTabViewState extends State<_HomeTabView> {
     final filteredProducts = !areaAvailable
         ? <DughryCatalogProduct>[]
         : DughryAppStateStore.sampleProducts.where((p) {
-            final matchesArea = p.governorateAr == gov.nameAr;
-            final matchesCategory = widget.widget.selectedCategoryId == null || p.categoryId == widget.selectedCategoryId;
+            final matchesArea = p.governorateAr == widget.gov.nameAr;
+            final matchesCategory = widget.selectedCategoryId == null || p.categoryId == widget.selectedCategoryId;
             final query = _searchQuery.trim().toLowerCase();
             final matchesSearch = query.isEmpty || p.nameAr.toLowerCase().contains(query) || p.categoryTitleAr.toLowerCase().contains(query);
             return matchesArea && matchesCategory && matchesSearch;
@@ -306,8 +306,8 @@ class _HomeTabViewState extends State<_HomeTabView> {
               Expanded(
                 child: Text(
                   areaAvailable
-                      ? 'متاح الآن في ${gov.nameAr} (${DughryLocationStore.selectedCenter})'
-                      : 'الخدمات في ${gov.nameAr} - ${DughryLocationStore.selectedCenter} ستتاح قريباً',
+                      ? 'متاح الآن في ${widget.gov.nameAr} (${DughryLocationStore.selectedCenter})'
+                      : 'الخدمات في ${widget.gov.nameAr} - ${DughryLocationStore.selectedCenter} ستتاح قريباً',
                   style: const TextStyle(
                     color: DughryColors.textLight,
                     fontWeight: FontWeight.w600,
@@ -388,7 +388,7 @@ class _HomeTabViewState extends State<_HomeTabView> {
             ),
             if (widget.selectedCategoryId != null)
               TextButton(
-                onPressed: () => widget.onSelectCategory(widget.widget.selectedCategoryId!),
+                onPressed: () => widget.onSelectCategory(widget.selectedCategoryId!),
                 child: const Text(
                   'عرض الكل',
                   style: TextStyle(color: DughryColors.silverBright),
@@ -438,7 +438,7 @@ class _HomeTabViewState extends State<_HomeTabView> {
               ),
               isThreeLine: true,
               trailing: ElevatedButton(
-                onPressed: () => widget.widget.onAddToCart(prod),
+                onPressed: () => widget.onAddToCart(prod),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: DughryColors.silverPrimary,
                   foregroundColor: DughryColors.royalNavyDeep,
