@@ -68,6 +68,7 @@ class _SplashScreenState extends State<SplashScreen>
   late final AnimationController _animController;
   late final Animation<double> _fadeAnim;
   int unreadNotificationsCount = 0;
+  Timer? _launchTimer;
 
   @override
   void initState() {
@@ -80,10 +81,24 @@ class _SplashScreenState extends State<SplashScreen>
       parent: _animController,
       curve: Curves.easeOutCubic,
     );
+    // The opening screen remains visible briefly, then normal customers
+    // enter the complete shopping home without having to choose a role.
+    _launchTimer = Timer(const Duration(seconds: 5), () {
+      if (!mounted) return;
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => RoleDashboardScreen(
+            initialRole: UserRoleType.customer,
+            onLocationUpdated: () {},
+          ),
+        ),
+      );
+    });
   }
 
   @override
   void dispose() {
+    _launchTimer?.cancel();
     _animController.dispose();
     super.dispose();
   }
@@ -177,7 +192,8 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _onQuickRoleTap(UserRoleType role) {
-    Navigator.of(context).push(
+    _launchTimer?.cancel();
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => RoleDashboardScreen(
           initialRole: role,
