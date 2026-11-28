@@ -2,7 +2,7 @@ name: Build DUGHRY Flutter APK
 
 on:
   push:
-    branches: [ "main", "prototype-wow-preview", "diagnostics/startup-crash" ]
+    branches: [ "main", "prototype-wow-preview", "diagnostics/startup-crash", "diagnostics/flutter-shell-test" ]
   workflow_dispatch:
 
 jobs:
@@ -68,5 +68,5 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: DUGHRY-startup-diagnostic-arm64
+          name: DUGHRY-flutter-shell-test-arm64
           path: build/app/outputs/flutter-apk/app-release.apk
