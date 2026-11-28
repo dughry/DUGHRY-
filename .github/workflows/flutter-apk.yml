@@ -2,7 +2,7 @@ name: Build DUGHRY Flutter APK
 
 on:
   push:
-    branches: [ "main", "prototype-wow-preview" ]
+    branches: [ "main", "prototype-wow-preview", "diagnostics/startup-crash" ]
   workflow_dispatch:
 
 jobs:
@@ -41,14 +41,23 @@ jobs:
           fi
           # Keep the preview installable beside the existing DUGHRY app.
           if [ -f android/app/build.gradle.kts ]; then
-            sed -i 's/com\.dughry\.dughry/com.dughry.dughry.preview/g' android/app/build.gradle.kts
+            sed -i 's/com\.dughry\.dughry/com.dughry.dughry.diagnostic/g' android/app/build.gradle.kts
           elif [ -f android/app/build.gradle ]; then
             sed -i 's/com\.dughry\.dughry/com.dughry.dughry.preview/g' android/app/build.gradle
           fi
-          sed -i 's/android:label="dughry"/android:label="DUGHRY تجربة"/' android/app/src/main/AndroidManifest.xml
+          sed -i 's/android:label="dughry"/android:label="DUGHRY تشخيص"/' android/app/src/main/AndroidManifest.xml
 
       - name: Get dependencies
         run: flutter pub get
+
+      - name: Record Android startup configuration
+        run: |
+          echo "=== Flutter version ==="
+          flutter --version
+          echo "=== Generated Android manifest ==="
+          cat android/app/src/main/AndroidManifest.xml
+          echo "=== Generated Android Gradle config ==="
+          cat android/app/build.gradle.kts 2>/dev/null || cat android/app/build.gradle
 
       - name: Format Dart sources
         run: dart format lib
@@ -59,5 +68,5 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: DUGHRY-preview-release-arm64
+          name: DUGHRY-startup-diagnostic-arm64
           path: build/app/outputs/flutter-apk/app-release.apk
