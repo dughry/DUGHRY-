@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animController;
   late final Animation<double> _fadeAnim;
-  int unreadNotificationsCount = 3;
+  int unreadNotificationsCount = 0;
 
   @override
   void initState() {
@@ -133,15 +133,15 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
                 const Divider(color: DughryColors.borderSubtle),
                 const _NotificationTile(
-                  title: 'مرحباً بك في المنيا - مركز العدوة',
-                  subtitle: 'الخدمات متاحة الآن في مركز العدوة، والقاهرة والجيزة.',
-                  badgeText: 'جديد',
+                  title: 'معاينة تجريبية للإشعارات',
+                  subtitle: 'سيتم عرض إشعارات الطلبات والتسجيلات بعد ربط خدمة الإشعارات.',
+                  badgeText: 'تجريبي',
                   badgeColor: DughryColors.goldPrimary,
                 ),
                 const _NotificationTile(
-                  title: 'تحديث منظومة الفنيين والأطباء',
-                  subtitle: 'حجز فوري ومباشر بأعلى معايير الجودة.',
-                  badgeText: 'تنبيه',
+                  title: 'تنبيه توضيحي',
+                  subtitle: 'لا توجد حالياً إشعارات حقيقية متصلة بالخادم.',
+                  badgeText: 'تجريبي',
                   badgeColor: DughryColors.crimsonRed,
                 ),
                 const SizedBox(height: 10),
