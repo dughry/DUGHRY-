@@ -33,15 +33,22 @@ jobs:
           cp /tmp/pubspec.yaml.bak pubspec.yaml
           cp /tmp/main.dart.bak lib/main.dart
           sed -i 's/gradle-[0-9.]*-[a-z]*.zip/gradle-8.9-all.zip/' android/gradle/wrapper/gradle-wrapper.properties
+          # Keep the preview installable beside the existing DUGHRY app.
+          if [ -f android/app/build.gradle.kts ]; then
+            sed -i 's/com\\.dughry\\.dughry/com.dughry.dughry.preview/g' android/app/build.gradle.kts
+          elif [ -f android/app/build.gradle ]; then
+            sed -i 's/com\\.dughry\\.dughry/com.dughry.dughry.preview/g' android/app/build.gradle
+          fi
+          sed -i 's/android:label="dughry"/android:label="DUGHRY تجربة"/' android/app/src/main/AndroidManifest.xml
 
       - name: Get dependencies
         run: flutter pub get
 
       - name: Build release APK
-        run: flutter build apk --release
+        run: flutter build apk --release --target-platform android-arm64
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dughry-release-apk
+          name: DUGHRY-preview-release-arm64
           path: build/app/outputs/flutter-apk/app-release.apk
