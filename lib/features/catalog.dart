@@ -189,7 +189,12 @@ class DughryAppStateStore {
     }
   }
 
-  static DughryOrderRecord checkoutCart(String locationLabel) {
+  static DughryOrderRecord? checkoutCart(String locationLabel) {
+    if (cartItems.isEmpty) return null;
+    final selectedGovernorate = DughryLocationStore.currentGovernorate.nameAr;
+    if (cartItems.any((entry) => entry.product.governorateAr != selectedGovernorate)) {
+      return null;
+    }
     final amount = cartSubtotal;
     final count = totalCartCount;
     final record = DughryOrderRecord(
