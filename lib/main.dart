@@ -3,6 +3,7 @@ library dughry;
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'dart:ui' show PlatformDispatcher;
 // ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,6 +21,23 @@ part 'features/location_picker.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Startup diagnostics: keep the original app flow and report uncaught errors.
+  debugPrint('DUGHRY_DIAGNOSTIC: main() entered');
+
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.presentError(details);
+    debugPrint('DUGHRY_FLUTTER_ERROR: ${details.exception}');
+    if (details.stack != null) {
+      debugPrint('DUGHRY_FLUTTER_STACK: ${details.stack}');
+    }
+  };
+
+  PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+    debugPrint('DUGHRY_PLATFORM_ERROR: $error');
+    debugPrint('DUGHRY_PLATFORM_STACK: $stack');
+    return false;
+  };
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
