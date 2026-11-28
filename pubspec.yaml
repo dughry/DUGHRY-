@@ -1,5 +1,5 @@
 name: dughry
-description: "دوجري | DUGHRY - كل احتياجاتك في مكان واحد"
+description: "DUGHRY Flutter shell diagnostic"
 publish_to: 'none'
 version: 1.0.1+2
 
@@ -9,9 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
