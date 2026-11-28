@@ -91,7 +91,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
           onPressed: () => Navigator.of(context).pop(),
           icon: const Icon(
             Icons.arrow_forward_rounded,
-            color: DughryColors.goldLight,
+            color: DughryColors.silverBright,
           ),
         ),
         title: Column(
@@ -108,7 +108,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
             Text(
               '${gov.nameAr} - ${DughryLocationStore.selectedCenter}',
               style: const TextStyle(
-                color: DughryColors.goldLight,
+                color: DughryColors.silverBright,
                 fontSize: 12,
               ),
             ),
@@ -135,7 +135,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
             },
             icon: const Icon(
               Icons.location_on_rounded,
-              color: DughryColors.goldPrimary,
+              color: DughryColors.silverPrimary,
             ),
           ),
         ],
@@ -151,7 +151,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
         onTap: (idx) => setState(() => _bottomNavIndex = idx),
         type: BottomNavigationBarType.fixed,
         backgroundColor: DughryColors.royalNavyDeep,
-        selectedItemColor: DughryColors.goldPrimary,
+        selectedItemColor: DughryColors.silverPrimary,
         unselectedItemColor: DughryColors.silverMuted,
         items: [
           const BottomNavigationBarItem(
@@ -220,7 +220,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
             children: [
               const Icon(
                 Icons.verified_rounded,
-                color: DughryColors.goldPrimary,
+                color: DughryColors.silverPrimary,
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -241,7 +241,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
         const Text(
           'أقسام دوجري السريعة',
           style: TextStyle(
-            color: DughryColors.goldLight,
+            color: DughryColors.silverBright,
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
@@ -269,7 +269,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected
-                          ? DughryColors.goldPrimary
+                          ? DughryColors.silverPrimary
                           : DughryColors.borderSubtle,
                     ),
                   ),
@@ -302,7 +302,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
             const Text(
               'العروض والخدمات المتاحة',
               style: TextStyle(
-                color: DughryColors.goldLight,
+                color: DughryColors.silverBright,
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
@@ -341,7 +341,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
               contentPadding: const EdgeInsets.all(12),
               leading: CircleAvatar(
                 backgroundColor: DughryColors.royalNavySurface,
-                child: Icon(prod.icon, color: DughryColors.goldPrimary),
+                child: Icon(prod.icon, color: DughryColors.silverPrimary),
               ),
               title: Text(
                 prod.nameAr,
@@ -361,7 +361,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
               trailing: ElevatedButton(
                 onPressed: () => onAddToCart(prod),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: DughryColors.goldPrimary,
+                  backgroundColor: DughryColors.silverPrimary,
                   foregroundColor: DughryColors.royalNavyDeep,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                 ),
@@ -483,7 +483,7 @@ class _CartTabView extends StatelessWidget {
                   ),
                   subtitle: Text(
                     '${entry.lineTotal.toStringAsFixed(0)} ج.م (الكمية: ${entry.quantity})',
-                    style: const TextStyle(color: DughryColors.goldLight),
+                    style: const TextStyle(color: DughryColors.silverBright),
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -524,7 +524,7 @@ class _CartTabView extends StatelessWidget {
               Text(
                 'الإجمالي: ${DughryAppStateStore.cartSubtotal.toStringAsFixed(0)} ج.م',
                 style: const TextStyle(
-                  color: DughryColors.goldLight,
+                  color: DughryColors.silverBright,
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
                 ),
@@ -551,7 +551,7 @@ class _CartTabView extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: DughryColors.goldPrimary,
+                  backgroundColor: DughryColors.silverPrimary,
                   foregroundColor: DughryColors.royalNavyDeep,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
@@ -595,7 +595,7 @@ class _OrdersTabView extends StatelessWidget {
             title: Text(
               'طلب #${o.orderId} • ${o.statusText}',
               style: const TextStyle(
-                color: DughryColors.goldLight,
+                color: DughryColors.silverBright,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -647,7 +647,7 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
         const Text(
           'تبديل الدور النشط',
           style: TextStyle(
-            color: DughryColors.goldLight,
+            color: DughryColors.silverBright,
             fontWeight: FontWeight.bold,
           ),
         ),
