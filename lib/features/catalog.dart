@@ -221,7 +221,7 @@ class DughryAppStateStore {
       price: 165.0,
       unitLabel: 'لكل 5 كجم',
       icon: Icons.shopping_bag_rounded,
-      badge: 'الأكثر طلباً',
+      badge: 'بيانات تجريبية',
     ),
     DughryCatalogProduct(
       id: 'PRD-2',
@@ -232,7 +232,7 @@ class DughryAppStateStore {
       price: 2450.0,
       unitLabel: 'لكل قطعة',
       icon: Icons.soup_kitchen_rounded,
-      badge: 'عرض دوجري',
+      badge: 'بيانات تجريبية',
     ),
     DughryCatalogProduct(
       id: 'PRD-3',
@@ -243,7 +243,7 @@ class DughryAppStateStore {
       price: 300.0,
       unitLabel: 'لكل كشف',
       icon: Icons.medical_services_rounded,
-      badge: 'حجز فوري',
+      badge: 'بيانات تجريبية',
     ),
     DughryCatalogProduct(
       id: 'PRD-4',
@@ -254,7 +254,7 @@ class DughryAppStateStore {
       price: 450.0,
       unitLabel: 'لكل زيارة',
       icon: Icons.home_repair_service_rounded,
-      badge: 'متاح اليوم',
+      badge: 'بيانات تجريبية',
     ),
   ];
 }
