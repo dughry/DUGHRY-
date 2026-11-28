@@ -209,6 +209,61 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        Row(
+          children: [
+            Container(
+              width: 46,
+              height: 46,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: DughryColors.silverGradient,
+                boxShadow: [
+                  BoxShadow(
+                    color: DughryColors.silverPrimary.withValues(alpha: 0.18),
+                    blurRadius: 14,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.storefront_rounded,
+                color: DughryColors.royalNavyDeep,
+                size: 25,
+              ),
+            ),
+            const SizedBox(width: 11),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'دوجري | DUGHRY',
+                    style: TextStyle(
+                      color: DughryColors.silverBright,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  Text(
+                    'كل احتياجاتك في مكان واحد',
+                    style: TextStyle(
+                      color: DughryColors.textSecondary,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.auto_awesome_rounded,
+              color: DughryColors.silverPrimary,
+              size: 23,
+            ),
+          ],
+        ),
+        const SizedBox(height: 17),
+        const _DughryAdsCarousel(),
+        const SizedBox(height: 18),
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
@@ -248,7 +303,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
         ),
         const SizedBox(height: 10),
         SizedBox(
-          height: 86,
+          height: 112,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: DughryAppStateStore.categories.length,
@@ -260,7 +315,7 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
                 onTap: () => onSelectCategory(cat.id),
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
-                  width: 96,
+                  width: 104,
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: isSelected
@@ -276,8 +331,12 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(cat.icon, color: cat.accentColor, size: 24),
-                      const SizedBox(height: 6),
+                      AnimatedCategoryIcon(
+                        category: cat,
+                        size: 58,
+                        phase: index,
+                      ),
+                      const SizedBox(height: 5),
                       Text(
                         cat.titleAr,
                         maxLines: 1,
@@ -378,6 +437,295 @@ class _RoleDashboardScreenState extends State<RoleDashboardScreen> {
   }
 }
 
+
+
+class _DughryAdsCarousel extends StatefulWidget {
+  const _DughryAdsCarousel();
+
+  @override
+  State<_DughryAdsCarousel> createState() => _DughryAdsCarouselState();
+}
+
+class _DughryAdsCarouselState extends State<_DughryAdsCarousel> {
+  final PageController _pageController =
+      PageController(viewportFraction: 0.94);
+  Timer? _rotationTimer;
+  int _activePage = 0;
+
+  static const List<String> _titles = [
+    'كل احتياجات بيتك في مكان واحد',
+    'اطلب فني موثوق بسهولة',
+    'اكتشف عروض دوجري الجديدة',
+  ];
+
+  static const List<String> _subtitles = [
+    'تسوق المنتجات والخدمات من أقسام دوجري',
+    'صيانة وكهرباء وسباكة وخدمات منزلية',
+    'مساحة إعلانية تجريبية قابلة للتحكم من الإدارة',
+  ];
+
+  static const List<IconData> _icons = [
+    Icons.shopping_bag_rounded,
+    Icons.home_repair_service_rounded,
+    Icons.local_offer_rounded,
+  ];
+
+  static const List<Color> _colors = [
+    Color(0xFF174477),
+    Color(0xFF17615F),
+    Color(0xFF59447F),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _rotationTimer = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (!_pageController.hasClients) return;
+      _activePage = (_activePage + 1) % _titles.length;
+      _pageController.animateToPage(
+        _activePage,
+        duration: const Duration(milliseconds: 550),
+        curve: Curves.easeInOutCubic,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _rotationTimer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 148,
+          child: PageView.builder(
+            controller: _pageController,
+            itemCount: _titles.length,
+            onPageChanged: (page) => setState(() => _activePage = page),
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Container(
+                  padding: const EdgeInsets.all(17),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(22),
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        _colors[index],
+                        DughryColors.royalNavyDeep,
+                      ],
+                    ),
+                    border: Border.all(
+                      color: DughryColors.silverPrimary.withValues(alpha: 0.24),
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x33000000),
+                        blurRadius: 14,
+                        offset: Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: -12,
+                        bottom: -35,
+                        child: Icon(
+                          _icons[index],
+                          size: 150,
+                          color: Colors.white.withValues(alpha: 0.07),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 9,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: DughryColors.silverPrimary
+                                        .withValues(alpha: 0.16),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: const Text(
+                                    'إعلان تجريبي',
+                                    style: TextStyle(
+                                      color: DughryColors.silverBright,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 9),
+                                Text(
+                                  _titles[index],
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  _subtitles[index],
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                    color: DughryColors.textSecondary,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            width: 76,
+                            height: 76,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withValues(alpha: 0.12),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.2),
+                              ),
+                            ),
+                            child: Icon(
+                              _icons[index],
+                              color: DughryColors.silverBright,
+                              size: 39,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 9),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(
+            _titles.length,
+            (index) => AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              width: _activePage == index ? 19 : 6,
+              height: 6,
+              margin: const EdgeInsets.symmetric(horizontal: 3),
+              decoration: BoxDecoration(
+                color: _activePage == index
+                    ? DughryColors.silverPrimary
+                    : DughryColors.silverMuted.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class AnimatedCategoryIcon extends StatefulWidget {
+  final DughryCategoryItem category;
+  final double size;
+  final int phase;
+
+  const AnimatedCategoryIcon({
+    super.key,
+    required this.category,
+    required this.size,
+    this.phase = 0,
+  });
+
+  @override
+  State<AnimatedCategoryIcon> createState() => _AnimatedCategoryIconState();
+}
+
+class _AnimatedCategoryIconState extends State<AnimatedCategoryIcon>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _floatOffset;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1550 + (widget.phase % 4) * 230),
+    )..repeat(reverse: true);
+    _floatOffset = Tween<double>(begin: -3.5, end: 3.5).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOutSine),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _floatOffset,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(0, _floatOffset.value),
+          child: child,
+        );
+      },
+      child: Container(
+        width: widget.size,
+        height: widget.size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+          border: Border.all(
+            color: DughryColors.silverPrimary.withValues(alpha: 0.85),
+            width: 1.2,
+          ),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x33000000),
+              blurRadius: 9,
+              offset: Offset(0, 5),
+            ),
+            BoxShadow(
+              color: Color(0x66FFFFFF),
+              blurRadius: 3,
+              offset: Offset(-2, -2),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Icon(
+            widget.category.icon,
+            color: widget.category.accentColor,
+            size: widget.size * 0.43,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _CategoriesTabView extends StatelessWidget {
   final String? selectedCategoryId;
   final ValueChanged<String> onPickCategory;
@@ -395,7 +743,7 @@ class _CategoriesTabView extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
-        childAspectRatio: 1.25,
+        childAspectRatio: 1.02,
       ),
       itemCount: DughryAppStateStore.categories.length,
       itemBuilder: (_, index) {
@@ -413,8 +761,12 @@ class _CategoriesTabView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(cat.icon, color: cat.accentColor, size: 32),
-                const SizedBox(height: 8),
+                AnimatedCategoryIcon(
+                  category: cat,
+                  size: 72,
+                  phase: index,
+                ),
+                const SizedBox(height: 9),
                 Text(
                   cat.titleAr,
                   style: const TextStyle(
