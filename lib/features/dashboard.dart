@@ -795,58 +795,6 @@ class _AccountAndAdminTabViewState extends State<_AccountAndAdminTabView> {
             ),
           ),
         ] else ...[
-            const Text(
-              'طلبات التسجيل والمراجعة الإدارية',
-              style: TextStyle(
-                color: DughryColors.goldLight,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            ...DughryPortalStore.records.map(
-              (req) => Card(
-                color: DughryColors.royalNavyCard,
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  title: Text(
-                    '${req.fullName} (${req.role.labelAr})',
-                    style: const TextStyle(
-                      color: DughryColors.textLight,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    '${req.governorateAr} - ${req.addressOrCenter}\n${req.primaryDetail} • ${req.status.labelAr}',
-                    style: const TextStyle(
-                      color: DughryColors.textSecondary,
-                      fontSize: 12,
-                    ),
-                  ),
-                  isThreeLine: true,
-                  trailing: PopupMenuButton<RegistrationStatus>(
-                    icon: const Icon(
-                      Icons.more_vert_rounded,
-                      color: DughryColors.goldLight,
-                    ),
-                    onSelected: (st) {
-                      DughryPortalStore.updateStatus(req.id, st);
-                      widget.onRefresh();
-                      setState(() {});
-                    },
-                    itemBuilder: (_) => RegistrationStatus.values
-                        .map(
-                          (st) => PopupMenuItem(
-                            value: st,
-                            child: Text(st.labelAr),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ),
-            ),
-         ],
-        ] else ...[
           DropdownButtonFormField<UserRoleType>(
             value: _formRole,
             dropdownColor: DughryColors.royalNavyCard,
