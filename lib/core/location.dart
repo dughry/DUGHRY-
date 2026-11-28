@@ -239,7 +239,7 @@ class DughryLocationStore {
   static GovernorateItem get currentGovernorate {
     return governorates.firstWhere(
       (g) => g.id == selectedGovernorateId,
-      orElse: () => governorates[2],
+      orElse: () => governorates.first,
     );
   }
 }
