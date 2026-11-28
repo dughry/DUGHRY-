@@ -285,7 +285,7 @@ class _RoleRegistrationFormState extends State<RoleRegistrationForm> {
           if (widget.role == UserRoleType.merchant) ...[
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              value: _merchantCategory,
+              initialValue: _merchantCategory,
               dropdownColor: DughryColors.royalNavyCard,
               decoration: const InputDecoration(
                 labelText: 'تصنيف النشاط التجاري',
