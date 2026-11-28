@@ -10,6 +10,11 @@ class DughryApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       locale: const Locale('ar', 'EG'),
       supportedLocales: const [Locale('ar', 'EG')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       builder: (context, child) {
         return Directionality(
           textDirection: TextDirection.rtl,
